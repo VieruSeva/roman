@@ -12,7 +12,7 @@ class ANIMPAPITest(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(ANIMPAPITest, self).__init__(*args, **kwargs)
         # Get the backend URL from environment variable or use a default
-        self.base_url = os.environ.get('REACT_APP_BACKEND_URL', 'https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com')
+        self.base_url = os.environ.get('REACT_APP_BACKEND_URL', 'https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com')
         logger.info(f"Using backend URL: {self.base_url}")
 
     def test_api_root(self):

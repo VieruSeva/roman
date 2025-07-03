@@ -90,7 +90,7 @@ class PartnersPDFTester:
 
 def main():
     # Get the backend URL from environment or use the provided one
-    backend_url = "https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com"
+    backend_url = "https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com"
     
     print(f"🚀 Testing Partners PDF Download APIs at {backend_url}")
     

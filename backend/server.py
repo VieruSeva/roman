@@ -128,7 +128,7 @@ async def extract_image_from_url(url: str) -> dict:
 # Add your routes to the router instead of directly to app
 @api_router.get("/", response_class=HTMLResponse)
 async def root():
-    preview_url = os.environ.get("preview_endpoint", "https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com")
+    preview_url = os.environ.get("preview_endpoint", "https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com")
     html_content = f"""
     <!DOCTYPE html>
     <html>
@@ -228,7 +228,7 @@ async def root():
 
 @api_router.get("/preview", response_class=HTMLResponse)
 async def preview_redirect():
-    preview_url = os.environ.get("preview_endpoint", "https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com")
+    preview_url = os.environ.get("preview_endpoint", "https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com")
     html_content = f"""
     <!DOCTYPE html>
     <html>
@@ -293,7 +293,7 @@ async def preview_redirect():
 
 @api_router.get("/links", response_class=HTMLResponse)
 async def site_links():
-    preview_url = os.environ.get("preview_endpoint", "https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com")
+    preview_url = os.environ.get("preview_endpoint", "https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com")
     html_content = f"""
     <!DOCTYPE html>
     <html>
@@ -359,8 +359,8 @@ async def site_links():
         <div class="link-section">
             <h2>Original Preview Link</h2>
             <p>For reference, this was the original link you provided:</p>
-            <a class="button" href="https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com/" target="_blank">Open Original Site</a>
-            <p>URL: <code class="code">https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com/</code></p>
+            <a class="button" href="https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com/" target="_blank">Open Original Site</a>
+            <p>URL: <code class="code">https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com/</code></p>
         </div>
         
         <div class="link-section">

@@ -3,7 +3,7 @@ import sys
 
 def test_image_paths():
     """Test different image paths to determine the correct one"""
-    base_url = "https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com"
+    base_url = "https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com"
     
     # Test paths
     paths = [

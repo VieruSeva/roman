@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 class ANIMPMinisterDocumentsTester:
-    def __init__(self, base_url="https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com"):
+    def __init__(self, base_url="https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0
@@ -155,7 +155,7 @@ class ANIMPMinisterDocumentsTester:
 
 def main():
     # Get backend URL from environment or use default
-    backend_url = os.environ.get('REACT_APP_BACKEND_URL', 'https://1a9a88ed-adf2-4970-936f-f3e05b243feb.preview.emergentagent.com')
+    backend_url = os.environ.get('REACT_APP_BACKEND_URL', 'https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com')
     
     print(f"Testing ANIMP API at: {backend_url}")
     tester = ANIMPMinisterDocumentsTester(backend_url)
