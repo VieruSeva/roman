@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Hero } from '../components/Hero';
 import { About } from '../components/About';
-import { MainPageNews } from '../components/MainPageNews';
 import { Contact } from '../components/Contact';
-import { FaUsers, FaHistory, FaLandmark, FaStar } from 'react-icons/fa';
+import { FaUsers, FaHistory, FaLandmark, FaStar, FaCalendarAlt, FaTag, FaUser, FaSearch, FaClock, FaExternalLinkAlt, FaChevronRight, FaMapMarkerAlt, FaFlask, FaFileAlt, FaImage } from 'react-icons/fa';
+import ministerImage from "../images/minister.jpg";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
