@@ -96,7 +96,7 @@ class ImageExtractorService
         $totalUrls = count($urls);
         
         foreach ($urls as $index => $url) {
-            Log::info("Processing URL {$index + 1}/{$totalUrls}: {$url}");
+            Log::info("Processing URL " . ($index + 1) . "/{$totalUrls}: {$url}");
             
             $result = $this->extractFromUrl($url);
             $results[] = $result;
