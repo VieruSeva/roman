@@ -158,7 +158,6 @@ const HomePage = () => {
       url: "https://moldova.europalibera.org/a/27188328.html"
     }
   ];
-  
   // Helper functions for latest news section
   const toggleReadMore = (id) => {
     setExpandedItemId(expandedItemId === id ? null : id);
@@ -305,17 +304,6 @@ const HomePage = () => {
 
     fetchNewsImages();
   }, []);
-  
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
     helloWorldApi();
     
     // Initialize AOS animation library with enhanced settings
