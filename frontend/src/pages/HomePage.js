@@ -159,6 +159,153 @@ const HomePage = () => {
     }
   ];
   
+  // Helper functions for latest news section
+  const toggleReadMore = (id) => {
+    setExpandedItemId(expandedItemId === id ? null : id);
+  };
+
+  const openPreview = (url, title) => {
+    setPreviewModal({
+      isOpen: true,
+      url: url,
+      title: title
+    });
+  };
+
+  const closePreview = () => {
+    setPreviewModal({
+      isOpen: false,
+      url: '',
+      title: ''
+    });
+  };
+
+  const downloadFile = async (url, filename) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      alert('Eroare la descărcarea fișierului. Încercați din nou.');
+    }
+  };
+
+  // Animation variants
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    })
+  };
+
+  const helloWorldApi = async () => {
+    try {
+      const response = await axios.get(`${API}/`);
+      console.log(response.data.message);
+    } catch (e) {
+      console.error(e, `errored out requesting / api`);
+    }
+  };
+
+  useEffect(() => {
+    helloWorldApi();
+    
+    // Initialize AOS animation library with enhanced settings
+    AOS.init({
+      duration: 1000,
+      once: true,
+      easing: 'ease-in-out',
+      mirror: true,
+      anchorPlacement: 'top-bottom'
+    });
+    
+    // If section is specified in URL, scroll to that section
+    if (section === 'despre-noi') {
+      setTimeout(() => {
+        const aboutSection = document.getElementById('despre-noi');
+        if (aboutSection) {
+          aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500);
+    }
+  }, [section]);
+
+  // Fetch images for latest news items when component mounts
+  useEffect(() => {
+    const fetchNewsImages = async () => {
+      try {
+        const urls = latestNewsData
+          .filter(news => news.url && news.url !== '#')
+          .map(news => news.url);
+        
+        console.log('Fetching images for URLs:', urls);
+        
+        if (urls.length === 0) {
+          console.log('No external URLs found');
+          setLoadingImages(false);
+          return;
+        }
+
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
+        console.log('Backend URL:', backendUrl);
+        
+        const apiUrl = `${backendUrl}/api/fetch-multiple-news-images`;
+        console.log('Calling API:', apiUrl);
+        
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(urls)
+        });
+
+        console.log('API Response status:', response.status);
+
+        if (response.ok) {
+          const results = await response.json();
+          console.log('API Results:', results);
+          
+          const imageMap = {};
+          results.forEach(result => {
+            if (result.image_url) {
+              imageMap[result.url] = {
+                image_url: result.image_url,
+                title: result.title,
+                description: result.description
+              };
+            }
+          });
+          
+          console.log('Image Map:', imageMap);
+          setNewsImages(imageMap);
+        } else {
+          console.error('API call failed:', response.status, await response.text());
+        }
+      } catch (error) {
+        console.error('Error fetching news images:', error);
+      } finally {
+        setLoadingImages(false);
+      }
+    };
+
+    fetchNewsImages();
+  }, []);
+  
   const helloWorldApi = async () => {
     try {
       const response = await axios.get(`${API}/`);
