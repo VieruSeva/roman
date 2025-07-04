@@ -983,108 +983,261 @@ class ApiController extends Controller
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Test Image Extraction</title>
+            <title>Advanced Image Extraction Testing</title>
             <style>
                 body {
-                    font-family: Arial, sans-serif;
-                    max-width: 800px;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                    max-width: 1200px;
                     margin: 0 auto;
                     padding: 20px;
                     line-height: 1.6;
+                    background-color: #f8fafc;
                 }
                 h1 {
-                    color: #4a5568;
-                    border-bottom: 2px solid #edf2f7;
+                    color: #2d3748;
+                    border-bottom: 3px solid #4299e1;
                     padding-bottom: 10px;
+                    margin-bottom: 30px;
                 }
                 .test-section {
-                    background-color: #f8fafc;
-                    border-radius: 8px;
-                    padding: 20px;
-                    margin: 20px 0;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                    background-color: white;
+                    border-radius: 12px;
+                    padding: 25px;
+                    margin: 25px 0;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                    border: 1px solid #e2e8f0;
                 }
                 .form-group {
-                    margin: 15px 0;
+                    margin: 20px 0;
                 }
                 label {
                     display: block;
-                    margin-bottom: 5px;
-                    font-weight: bold;
+                    margin-bottom: 8px;
+                    font-weight: 600;
+                    color: #2d3748;
                 }
-                input[type="url"] {
+                input[type="url"], input[type="text"] {
                     width: 100%;
-                    padding: 10px;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
+                    padding: 12px;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 8px;
                     font-size: 16px;
+                    transition: border-color 0.2s;
+                }
+                input[type="url"]:focus, input[type="text"]:focus {
+                    outline: none;
+                    border-color: #4299e1;
+                }
+                .checkbox-group {
+                    display: flex;
+                    gap: 20px;
+                    margin: 15px 0;
+                }
+                .checkbox-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
                 }
                 button {
-                    background-color: #4299e1;
+                    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
                     color: white;
-                    padding: 10px 20px;
+                    padding: 12px 24px;
                     border: none;
-                    border-radius: 4px;
+                    border-radius: 8px;
                     cursor: pointer;
                     font-size: 16px;
+                    font-weight: 600;
+                    transition: all 0.2s;
                 }
                 button:hover {
-                    background-color: #3182ce;
+                    background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%);
+                    transform: translateY(-1px);
+                }
+                button:disabled {
+                    background: #cbd5e0;
+                    cursor: not-allowed;
+                    transform: none;
                 }
                 .result {
                     margin-top: 20px;
-                    padding: 15px;
-                    border-radius: 4px;
-                    background-color: #e2e8f0;
+                    padding: 20px;
+                    border-radius: 8px;
+                    background-color: #f7fafc;
+                    border: 1px solid #e2e8f0;
                 }
                 .success {
-                    background-color: #c6f6d5;
-                    border: 1px solid #68d391;
+                    background-color: #f0fff4;
+                    border-color: #68d391;
+                    color: #22543d;
                 }
                 .error {
                     background-color: #fed7d7;
-                    border: 1px solid #fc8181;
+                    border-color: #fc8181;
+                    color: #742a2a;
+                }
+                .loading {
+                    background-color: #ebf8ff;
+                    border-color: #63b3ed;
+                    color: #2c5aa0;
                 }
                 .image-preview {
                     max-width: 100%;
                     max-height: 300px;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 8px;
+                    margin: 15px 0;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+                .metadata {
+                    background-color: #edf2f7;
+                    padding: 15px;
+                    border-radius: 6px;
                     margin: 10px 0;
+                    font-size: 14px;
+                }
+                .cache-controls {
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 15px;
+                }
+                .cache-btn {
+                    background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+                    padding: 8px 16px;
+                    font-size: 14px;
+                }
+                .cache-btn:hover {
+                    background: linear-gradient(135deg, #dd6b20 0%, #c05621 100%);
+                }
+                .progress-bar {
+                    width: 100%;
+                    height: 4px;
+                    background-color: #e2e8f0;
+                    border-radius: 2px;
+                    margin: 10px 0;
+                    overflow: hidden;
+                }
+                .progress-fill {
+                    height: 100%;
+                    background: linear-gradient(90deg, #4299e1, #3182ce);
+                    transition: width 0.3s ease;
+                    width: 0%;
+                }
+                pre {
+                    background-color: #1a202c;
+                    color: #e2e8f0;
+                    padding: 15px;
+                    border-radius: 6px;
+                    overflow-x: auto;
+                    font-size: 13px;
+                }
+                .stats {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                    gap: 15px;
+                    margin: 20px 0;
+                }
+                .stat-item {
+                    background: white;
+                    padding: 15px;
+                    border-radius: 8px;
+                    text-align: center;
+                    border: 1px solid #e2e8f0;
+                }
+                .stat-value {
+                    font-size: 24px;
+                    font-weight: bold;
+                    color: #4299e1;
+                }
+                .stat-label {
+                    font-size: 12px;
+                    color: #718096;
+                    text-transform: uppercase;
                 }
             </style>
         </head>
         <body>
-            <h1>Test Image Extraction from News URLs</h1>
+            <h1>🚀 Advanced Image Extraction Testing Suite</h1>
             
             <div class="test-section">
-                <h2>Test Single URL</h2>
+                <h2>📋 Single URL Testing</h2>
                 <div class="form-group">
-                    <label for="news-url">Enter News Article URL:</label>
+                    <label for="news-url">📰 Enter News Article URL:</label>
                     <input type="url" id="news-url" placeholder="https://example.com/news/article">
                 </div>
-                <button onclick="testSingleUrl()">Extract Image</button>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="force-refresh">
+                        <label for="force-refresh">🔄 Force Refresh (Clear Cache)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="include-metadata" checked>
+                        <label for="include-metadata">📊 Include Metadata</label>
+                    </div>
+                </div>
+                
+                <button onclick="testSingleUrl()">🔍 Extract Image</button>
+                
+                <div class="cache-controls">
+                    <button class="cache-btn" onclick="clearSingleCache()">🗑️ Clear Cache for URL</button>
+                    <button class="cache-btn" onclick="clearAllCache()">🧹 Clear All Cache</button>
+                </div>
+                
                 <div id="single-result"></div>
             </div>
 
             <div class="test-section">
-                <h2>Test Sample URLs</h2>
-                <p>Click to test with sample news URLs:</p>
-                <button onclick="testSampleUrls()">Test Sample URLs</button>
+                <h2>📚 Batch URL Testing</h2>
+                <div class="form-group">
+                    <label for="batch-urls">📝 Enter Multiple URLs (one per line):</label>
+                    <textarea id="batch-urls" rows="6" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: monospace;" placeholder="https://example.com/news/article1
+https://example.com/news/article2
+https://example.com/news/article3"></textarea>
+                </div>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="batch-force-refresh">
+                        <label for="batch-force-refresh">🔄 Force Refresh</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="batch-include-metadata" checked>
+                        <label for="batch-include-metadata">📊 Include Metadata</label>
+                    </div>
+                </div>
+                
+                <button onclick="testBatchUrls()">⚡ Process Batch</button>
+                <div id="batch-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div id="progress-text"></div>
+                </div>
+                <div id="batch-result"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>🎯 Quick Test Samples</h2>
+                <p>Click to test with pre-defined sample URLs:</p>
+                <button onclick="testSampleUrls()">🧪 Test Sample URLs</button>
                 <div id="sample-results"></div>
             </div>
             
             <script>
+                let currentBatchRequest = null;
+                
                 async function testSingleUrl() {
                     const url = document.getElementById("news-url").value;
+                    const forceRefresh = document.getElementById("force-refresh").checked;
+                    const includeMetadata = document.getElementById("include-metadata").checked;
                     const resultDiv = document.getElementById("single-result");
                     
                     if (!url) {
-                        resultDiv.innerHTML = \'<div class="result error">Please enter a URL</div>\';
+                        showResult(resultDiv, "error", "Please enter a URL");
                         return;
                     }
                     
-                    resultDiv.innerHTML = \'<div class="result">Loading...</div>\';
+                    showResult(resultDiv, "loading", "🔄 Extracting image data...");
                     
                     try {
                         const response = await fetch("/api/fetch-news-image", {
@@ -1092,39 +1245,178 @@ class ApiController extends Controller
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ url: url })
+                            body: JSON.stringify({ 
+                                url: url,
+                                force_refresh: forceRefresh,
+                                include_metadata: includeMetadata
+                            })
                         });
                         
                         const data = await response.json();
                         
                         if (data.success && data.image_url) {
-                            resultDiv.innerHTML = `
+                            let html = `
                                 <div class="result success">
                                     <h3>✅ Success!</h3>
-                                    <p><strong>URL:</strong> ${data.url}</p>
-                                    <p><strong>Title:</strong> ${data.title || "Not found"}</p>
-                                    <p><strong>Description:</strong> ${data.description || "Not found"}</p>
-                                    <p><strong>Image URL:</strong> <a href="${data.image_url}" target="_blank">${data.image_url}</a></p>
-                                    <img src="${data.image_url}" alt="Extracted Image" class="image-preview" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'block\';">
+                                    <p><strong>🌐 URL:</strong> ${data.url}</p>
+                                    <p><strong>📰 Title:</strong> ${data.title || "Not found"}</p>
+                                    <p><strong>📝 Description:</strong> ${data.description || "Not found"}</p>
+                                    <p><strong>🔗 Image URL:</strong> <a href="${data.image_url}" target="_blank">${data.image_url}</a></p>
+                                    <p><strong>🛠️ Method:</strong> ${data.extraction_method}</p>
+                                    <p><strong>⚡ Cached:</strong> ${data.cached ? "Yes" : "No"}</p>
+                                    <img src="${data.image_url}" alt="Extracted Image" class="image-preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                                     <p style="display:none; color:red;">⚠️ Image failed to load</p>
-                                </div>
                             `;
+                            
+                            if (includeMetadata && data.metadata) {
+                                html += `
+                                    <div class="metadata">
+                                        <strong>📊 Additional Metadata:</strong>
+                                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                                    </div>
+                                `;
+                            }
+                            
+                            html += `</div>`;
+                            resultDiv.innerHTML = html;
                         } else {
-                            resultDiv.innerHTML = `
-                                <div class="result error">
-                                    <h3>❌ Error</h3>
-                                    <p><strong>URL:</strong> ${data.url}</p>
-                                    <p><strong>Error:</strong> ${data.error}</p>
-                                </div>
-                            `;
+                            showResult(resultDiv, "error", `
+                                <h3>❌ Error</h3>
+                                <p><strong>🌐 URL:</strong> ${data.url}</p>
+                                <p><strong>❗ Error:</strong> ${data.error}</p>
+                                <p><strong>📰 Title:</strong> ${data.title || "Not found"}</p>
+                                <p><strong>📝 Description:</strong> ${data.description || "Not found"}</p>
+                            `);
                         }
                     } catch (error) {
-                        resultDiv.innerHTML = `
-                            <div class="result error">
-                                <h3>❌ Request Failed</h3>
-                                <p><strong>Error:</strong> ${error.message}</p>
-                            </div>
-                        `;
+                        showResult(resultDiv, "error", `
+                            <h3>❌ Request Failed</h3>
+                            <p><strong>❗ Error:</strong> ${error.message}</p>
+                        `);
+                    }
+                }
+                
+                async function testBatchUrls() {
+                    const urlsText = document.getElementById("batch-urls").value;
+                    const forceRefresh = document.getElementById("batch-force-refresh").checked;
+                    const includeMetadata = document.getElementById("batch-include-metadata").checked;
+                    const resultDiv = document.getElementById("batch-result");
+                    const progressDiv = document.getElementById("batch-progress");
+                    const progressFill = document.getElementById("progress-fill");
+                    const progressText = document.getElementById("progress-text");
+                    
+                    if (!urlsText.trim()) {
+                        showResult(resultDiv, "error", "Please enter URLs");
+                        return;
+                    }
+                    
+                    const urls = urlsText.trim().split("\\n").filter(url => url.trim().length > 0);
+                    
+                    if (urls.length === 0) {
+                        showResult(resultDiv, "error", "Please enter valid URLs");
+                        return;
+                    }
+                    
+                    if (urls.length > 50) {
+                        showResult(resultDiv, "error", "Maximum 50 URLs allowed");
+                        return;
+                    }
+                    
+                    progressDiv.style.display = "block";
+                    progressFill.style.width = "0%";
+                    progressText.textContent = "Starting batch processing...";
+                    
+                    showResult(resultDiv, "loading", `🔄 Processing ${urls.length} URLs...`);
+                    
+                    try {
+                        const startTime = Date.now();
+                        
+                        const response = await fetch("/api/fetch-multiple-news-images", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ 
+                                urls: urls,
+                                force_refresh: forceRefresh,
+                                include_metadata: includeMetadata
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        const endTime = Date.now();
+                        
+                        progressFill.style.width = "100%";
+                        progressText.textContent = "Processing complete!";
+                        
+                        if (data.success) {
+                            let html = `
+                                <div class="result success">
+                                    <h3>📊 Batch Processing Results</h3>
+                                    <div class="stats">
+                                        <div class="stat-item">
+                                            <div class="stat-value">${data.total_urls}</div>
+                                            <div class="stat-label">Total URLs</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-value">${data.successful_extractions}</div>
+                                            <div class="stat-label">Successful</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-value">${data.failed_extractions}</div>
+                                            <div class="stat-label">Failed</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-value">${data.success_rate}%</div>
+                                            <div class="stat-label">Success Rate</div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <div class="stat-value">${data.processing_time_seconds}s</div>
+                                            <div class="stat-label">Processing Time</div>
+                                        </div>
+                                    </div>
+                            `;
+                            
+                            data.results.forEach((result, index) => {
+                                if (result.success && result.image_url) {
+                                    html += `
+                                        <div style="margin: 20px 0; padding: 15px; border: 1px solid #68d391; border-radius: 8px; background-color: #f0fff4;">
+                                            <strong>URL ${index + 1}:</strong> ✅ Success<br>
+                                            <strong>Title:</strong> ${result.title || "Not found"}<br>
+                                            <strong>Method:</strong> ${result.extraction_method}<br>
+                                            <strong>Cached:</strong> ${result.cached ? "Yes" : "No"}<br>
+                                            <strong>Image:</strong> <a href="${result.image_url}" target="_blank">${result.image_url}</a><br>
+                                            <img src="${result.image_url}" alt="Image ${index + 1}" style="max-width: 200px; max-height: 150px; margin: 5px 0; border-radius: 4px;">
+                                        </div>
+                                    `;
+                                } else {
+                                    html += `
+                                        <div style="margin: 20px 0; padding: 15px; border: 1px solid #fc8181; border-radius: 8px; background-color: #fed7d7;">
+                                            <strong>URL ${index + 1}:</strong> ❌ ${result.error}<br>
+                                            <strong>URL:</strong> ${result.url}
+                                        </div>
+                                    `;
+                                }
+                            });
+                            
+                            html += `</div>`;
+                            resultDiv.innerHTML = html;
+                        } else {
+                            showResult(resultDiv, "error", `
+                                <h3>❌ Batch Processing Failed</h3>
+                                <p><strong>❗ Error:</strong> ${data.error}</p>
+                            `);
+                        }
+                        
+                    } catch (error) {
+                        showResult(resultDiv, "error", `
+                            <h3>❌ Request Failed</h3>
+                            <p><strong>❗ Error:</strong> ${error.message}</p>
+                        `);
+                    } finally {
+                        setTimeout(() => {
+                            progressDiv.style.display = "none";
+                        }, 2000);
                     }
                 }
                 
@@ -1135,53 +1427,65 @@ class ApiController extends Controller
                         "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/"
                     ];
                     
-                    const resultDiv = document.getElementById("sample-results");
-                    resultDiv.innerHTML = \'<div class="result">Testing sample URLs...</div>\';
+                    document.getElementById("batch-urls").value = sampleUrls.join("\\n");
+                    document.getElementById("batch-include-metadata").checked = true;
+                    
+                    await testBatchUrls();
+                }
+                
+                async function clearSingleCache() {
+                    const url = document.getElementById("news-url").value;
+                    
+                    if (!url) {
+                        alert("Please enter a URL first");
+                        return;
+                    }
                     
                     try {
-                        const response = await fetch("/api/fetch-multiple-news-images", {
-                            method: "POST",
+                        const response = await fetch("/api/clear-image-cache", {
+                            method: "DELETE",
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify(sampleUrls)
+                            body: JSON.stringify({ url: url })
                         });
                         
                         const data = await response.json();
                         
-                        let resultsHtml = `<div class="result"><h3>Results for ${data.total} URLs:</h3>`;
-                        
-                        data.results.forEach((result, index) => {
-                            if (result.success && result.image_url) {
-                                resultsHtml += `
-                                    <div style="margin: 15px 0; padding: 10px; border: 1px solid #68d391; border-radius: 4px; background-color: #c6f6d5;">
-                                        <strong>URL ${index + 1}:</strong> ✅ Success<br>
-                                        <strong>Title:</strong> ${result.title || "Not found"}<br>
-                                        <strong>Image:</strong> <a href="${result.image_url}" target="_blank">${result.image_url}</a><br>
-                                        <img src="${result.image_url}" alt="Image ${index + 1}" style="max-width: 200px; max-height: 150px; margin: 5px 0;">
-                                    </div>
-                                `;
-                            } else {
-                                resultsHtml += `
-                                    <div style="margin: 15px 0; padding: 10px; border: 1px solid #fc8181; border-radius: 4px; background-color: #fed7d7;">
-                                        <strong>URL ${index + 1}:</strong> ❌ ${result.error}<br>
-                                        <strong>URL:</strong> ${result.url}
-                                    </div>
-                                `;
-                            }
+                        if (data.success) {
+                            alert("✅ Cache cleared for URL");
+                        } else {
+                            alert("❌ Failed to clear cache: " + data.error);
+                        }
+                    } catch (error) {
+                        alert("❌ Error: " + error.message);
+                    }
+                }
+                
+                async function clearAllCache() {
+                    if (!confirm("Are you sure you want to clear all image extraction cache?")) {
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch("/api/clear-all-image-cache", {
+                            method: "DELETE"
                         });
                         
-                        resultsHtml += `</div>`;
-                        resultDiv.innerHTML = resultsHtml;
+                        const data = await response.json();
                         
+                        if (data.success) {
+                            alert("✅ All cache cleared");
+                        } else {
+                            alert("❌ Failed to clear cache: " + data.error);
+                        }
                     } catch (error) {
-                        resultDiv.innerHTML = `
-                            <div class="result error">
-                                <h3>❌ Request Failed</h3>
-                                <p><strong>Error:</strong> ${error.message}</p>
-                            </div>
-                        `;
+                        alert("❌ Error: " + error.message);
                     }
+                }
+                
+                function showResult(element, type, content) {
+                    element.innerHTML = `<div class="result ${type}">${content}</div>`;
                 }
             </script>
         </body>
