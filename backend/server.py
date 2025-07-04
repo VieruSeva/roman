@@ -375,10 +375,10 @@ async def test_image_extraction():
                     
                     const data = await response.json();
                     
-                    let resultsHtml = `<div class="result"><h3>Results for ${data.total} URLs:</h3>`;
+                    let resultsHtml = `<div class="result"><h3>Results for ${sampleUrls.length} URLs:</h3>`;
                     
-                    data.results.forEach((result, index) => {
-                        if (result.success && result.image_url) {
+                    data.forEach((result, index) => {
+                        if (result.image_url) {
                             resultsHtml += `
                                 <div style="margin: 15px 0; padding: 10px; border: 1px solid #68d391; border-radius: 4px; background-color: #c6f6d5;">
                                     <strong>URL ${index + 1}:</strong> ✅ Success<br>
@@ -390,7 +390,7 @@ async def test_image_extraction():
                         } else {
                             resultsHtml += `
                                 <div style="margin: 15px 0; padding: 10px; border: 1px solid #fc8181; border-radius: 4px; background-color: #fed7d7;">
-                                    <strong>URL ${index + 1}:</strong> ❌ ${result.error}<br>
+                                    <strong>URL ${index + 1}:</strong> ❌ ${result.error || "No image found"}<br>
                                     <strong>URL:</strong> ${result.url}
                                 </div>
                             `;
