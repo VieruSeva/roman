@@ -333,8 +333,8 @@ class ApiController extends Controller
     {
         // Try multiple possible locations
         $possiblePaths = [
-            public_path('../frontend/public/industria-bauturilor.pdf'),
-            public_path('../frontend/src/documents/Industria Băuturilor .pdf'), // Note the spaces
+            '/app/frontend/public/industria-bauturilor.pdf',
+            '/app/frontend/src/documents/Industria Băuturilor .pdf', // Note the spaces
         ];
         
         foreach ($possiblePaths as $filePath) {
@@ -351,8 +351,8 @@ class ApiController extends Controller
     public function downloadOfertaLactate()
     {
         $possiblePaths = [
-            public_path('../frontend/public/oferta-lactate-ro.pdf'),
-            public_path('../frontend/src/documents/Ofertă Lactate RO .pdf'), // Note the spaces
+            '/app/frontend/public/oferta-lactate-ro.pdf',
+            '/app/frontend/src/documents/Ofertă Lactate RO .pdf', // Note the spaces
         ];
         
         foreach ($possiblePaths as $filePath) {
@@ -369,8 +369,8 @@ class ApiController extends Controller
     public function downloadOfertaCarne()
     {
         $possiblePaths = [
-            public_path('../frontend/public/oferta-carne-si-oua-ro.pdf'),
-            public_path('../frontend/src/documents/Ofertă Carne și Ouă RO .pdf'), // Note the spaces
+            '/app/frontend/public/oferta-carne-si-oua-ro.pdf',
+            '/app/frontend/src/documents/Ofertă Carne și Ouă RO .pdf', // Note the spaces
         ];
         
         foreach ($possiblePaths as $filePath) {
