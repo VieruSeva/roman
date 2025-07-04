@@ -1264,15 +1264,8 @@ https://example.com/news/article3"></textarea>
                                     <p><strong>🔗 Image URL:</strong> <a href="${data.image_url}" target="_blank">${data.image_url}</a></p>
                                     <p><strong>🛠️ Method:</strong> ${data.extraction_method}</p>
                                     <p><strong>⚡ Cached:</strong> ${data.cached ? "Yes" : "No"}</p>
-                                    <img id="extracted-image" alt="Extracted Image" class="image-preview">
-                                    <p id="image-error" style="display:none; color:red;">⚠️ Image failed to load</p>
-                                    <script>
-                                        document.getElementById('extracted-image').src = data.image_url;
-                                        document.getElementById('extracted-image').onerror = function() {
-                                            this.style.display = 'none';
-                                            document.getElementById('image-error').style.display = 'block';
-                                        };
-                                    </script>
+                                    <img src="${data.image_url}" alt="Extracted Image" class="image-preview">
+                                    <p style="display:block; color:red;" id="img-error-${Date.now()}" class="hidden">⚠️ Image failed to load</p>
                             `;
                             
                             if (includeMetadata && data.metadata) {
