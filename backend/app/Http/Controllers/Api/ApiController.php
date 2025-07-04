@@ -963,6 +963,219 @@ class ApiController extends Controller
         return response($htmlContent, 200, ['Content-Type' => 'text/html']);
     }
 
+    public function testImageExtraction()
+    {
+        $htmlContent = '
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Test Image Extraction</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    line-height: 1.6;
+                }
+                h1 {
+                    color: #4a5568;
+                    border-bottom: 2px solid #edf2f7;
+                    padding-bottom: 10px;
+                }
+                .test-section {
+                    background-color: #f8fafc;
+                    border-radius: 8px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                }
+                .form-group {
+                    margin: 15px 0;
+                }
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: bold;
+                }
+                input[type="url"] {
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    font-size: 16px;
+                }
+                button {
+                    background-color: #4299e1;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+                button:hover {
+                    background-color: #3182ce;
+                }
+                .result {
+                    margin-top: 20px;
+                    padding: 15px;
+                    border-radius: 4px;
+                    background-color: #e2e8f0;
+                }
+                .success {
+                    background-color: #c6f6d5;
+                    border: 1px solid #68d391;
+                }
+                .error {
+                    background-color: #fed7d7;
+                    border: 1px solid #fc8181;
+                }
+                .image-preview {
+                    max-width: 100%;
+                    max-height: 300px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    margin: 10px 0;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Test Image Extraction from News URLs</h1>
+            
+            <div class="test-section">
+                <h2>Test Single URL</h2>
+                <div class="form-group">
+                    <label for="news-url">Enter News Article URL:</label>
+                    <input type="url" id="news-url" placeholder="https://example.com/news/article">
+                </div>
+                <button onclick="testSingleUrl()">Extract Image</button>
+                <div id="single-result"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>Test Sample URLs</h2>
+                <p>Click to test with sample news URLs:</p>
+                <button onclick="testSampleUrls()">Test Sample URLs</button>
+                <div id="sample-results"></div>
+            </div>
+            
+            <script>
+                async function testSingleUrl() {
+                    const url = document.getElementById("news-url").value;
+                    const resultDiv = document.getElementById("single-result");
+                    
+                    if (!url) {
+                        resultDiv.innerHTML = \'<div class="result error">Please enter a URL</div>\';
+                        return;
+                    }
+                    
+                    resultDiv.innerHTML = \'<div class="result">Loading...</div>\';
+                    
+                    try {
+                        const response = await fetch("/api/fetch-news-image", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ url: url })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success && data.image_url) {
+                            resultDiv.innerHTML = `
+                                <div class="result success">
+                                    <h3>✅ Success!</h3>
+                                    <p><strong>URL:</strong> ${data.url}</p>
+                                    <p><strong>Title:</strong> ${data.title || "Not found"}</p>
+                                    <p><strong>Description:</strong> ${data.description || "Not found"}</p>
+                                    <p><strong>Image URL:</strong> <a href="${data.image_url}" target="_blank">${data.image_url}</a></p>
+                                    <img src="${data.image_url}" alt="Extracted Image" class="image-preview" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'block\';">
+                                    <p style="display:none; color:red;">⚠️ Image failed to load</p>
+                                </div>
+                            `;
+                        } else {
+                            resultDiv.innerHTML = `
+                                <div class="result error">
+                                    <h3>❌ Error</h3>
+                                    <p><strong>URL:</strong> ${data.url}</p>
+                                    <p><strong>Error:</strong> ${data.error}</p>
+                                </div>
+                            `;
+                        }
+                    } catch (error) {
+                        resultDiv.innerHTML = `
+                            <div class="result error">
+                                <h3>❌ Request Failed</h3>
+                                <p><strong>Error:</strong> ${error.message}</p>
+                            </div>
+                        `;
+                    }
+                }
+                
+                async function testSampleUrls() {
+                    const sampleUrls = [
+                        "https://stiri.md/article/social/tot-mai-multi-pasionati-de-panificatie-descopera-farmecul-painii-cu-maia/",
+                        "https://agora.md/2025/02/21/cel-mai-mare-producator-din-industria-de-panificatie-din-moldova-inregistreaza-un-profit-record",
+                        "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/"
+                    ];
+                    
+                    const resultDiv = document.getElementById("sample-results");
+                    resultDiv.innerHTML = \'<div class="result">Testing sample URLs...</div>\';
+                    
+                    try {
+                        const response = await fetch("/api/fetch-multiple-news-images", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(sampleUrls)
+                        });
+                        
+                        const data = await response.json();
+                        
+                        let resultsHtml = `<div class="result"><h3>Results for ${data.total} URLs:</h3>`;
+                        
+                        data.results.forEach((result, index) => {
+                            if (result.success && result.image_url) {
+                                resultsHtml += `
+                                    <div style="margin: 15px 0; padding: 10px; border: 1px solid #68d391; border-radius: 4px; background-color: #c6f6d5;">
+                                        <strong>URL ${index + 1}:</strong> ✅ Success<br>
+                                        <strong>Title:</strong> ${result.title || "Not found"}<br>
+                                        <strong>Image:</strong> <a href="${result.image_url}" target="_blank">${result.image_url}</a><br>
+                                        <img src="${result.image_url}" alt="Image ${index + 1}" style="max-width: 200px; max-height: 150px; margin: 5px 0;">
+                                    </div>
+                                `;
+                            } else {
+                                resultsHtml += `
+                                    <div style="margin: 15px 0; padding: 10px; border: 1px solid #fc8181; border-radius: 4px; background-color: #fed7d7;">
+                                        <strong>URL ${index + 1}:</strong> ❌ ${result.error}<br>
+                                        <strong>URL:</strong> ${result.url}
+                                    </div>
+                                `;
+                            }
+                        });
+                        
+                        resultsHtml += `</div>`;
+                        resultDiv.innerHTML = resultsHtml;
+                        
+                    } catch (error) {
+                        resultDiv.innerHTML = `
+                            <div class="result error">
+                                <h3>❌ Request Failed</h3>
+                                <p><strong>Error:</strong> ${error.message}</p>
+                            </div>
+                        `;
+                    }
+                }
+            </script>
+        </body>
+        </html>';
+
+        return response($htmlContent, 200, ['Content-Type' => 'text/html']);
+    }
+
     public function newPreview()
     {
         $previewUrl = env('PREVIEW_ENDPOINT', 'https://2dc67065-7248-4fee-b4b1-5b30b36b281c.preview.emergentagent.com');
