@@ -260,71 +260,121 @@ class ApiController extends Controller
     }
 
     /**
-     * Fetch images from multiple news article URLs
+     * Fetch images from multiple news article URLs - COMPLETELY REWRITTEN
+     * New robust batch processing with progress tracking and better error handling
      */
     public function fetchMultipleNewsImages(Request $request)
     {
         try {
-            $urls = $request->json()->all();
+            // Enhanced validation
+            $validated = $request->validate([
+                'urls' => 'required|array|min:1|max:50',
+                'urls.*' => 'required|url|max:2048',
+                'force_refresh' => 'boolean',
+                'include_metadata' => 'boolean',
+                'parallel_processing' => 'boolean'
+            ]);
+
+            $urls = $validated['urls'];
+            $forceRefresh = $validated['force_refresh'] ?? false;
+            $includeMetadata = $validated['include_metadata'] ?? true;
+            $parallelProcessing = $validated['parallel_processing'] ?? false;
             
-            if (!is_array($urls) || empty($urls)) {
+            // Validate URL count
+            if (count($urls) > 50) {
                 return response()->json([
                     'success' => false,
-                    'error' => 'Please provide an array of URLs'
+                    'error' => 'Maximum 50 URLs allowed per request',
+                    'provided_count' => count($urls)
                 ], 400);
             }
 
-            $results = [];
+            // Use new ImageExtractor service
+            $extractor = app(\App\Services\ImageExtractorService::class);
             
-            foreach ($urls as $url) {
-                // Validate each URL
-                if (!filter_var($url, FILTER_VALIDATE_URL)) {
-                    $results[] = [
-                        'success' => false,
-                        'url' => $url,
-                        'error' => 'Invalid URL format',
-                        'image_url' => null,
-                        'title' => null,
-                        'description' => null
-                    ];
-                    continue;
+            // Clear cache if force refresh requested
+            if ($forceRefresh) {
+                foreach ($urls as $url) {
+                    $extractor->clearCache($url);
                 }
-
-                $result = $this->extractImageFromUrl($url);
-                
-                if (isset($result['error'])) {
+            }
+            
+            $startTime = microtime(true);
+            
+            // Extract images from multiple URLs
+            $extractionResult = $extractor->extractFromMultipleUrls($urls);
+            
+            $endTime = microtime(true);
+            $processingTime = round($endTime - $startTime, 2);
+            
+            // Process results
+            $results = [];
+            $successCount = 0;
+            $errorCount = 0;
+            
+            foreach ($extractionResult['results'] as $result) {
+                if ($result['success']) {
+                    $successCount++;
+                    $processedResult = [
+                        'success' => true,
+                        'url' => $result['url'],
+                        'image_url' => $result['image_url'],
+                        'title' => $result['title'],
+                        'description' => $result['description'],
+                        'extraction_method' => $result['extraction_method'],
+                        'cached' => $result['cached'] ?? false
+                    ];
+                    
+                    // Add optional metadata
+                    if ($includeMetadata) {
+                        $processedResult['image_alt'] = $result['image_alt'] ?? null;
+                        $processedResult['image_width'] = $result['image_width'] ?? null;
+                        $processedResult['image_height'] = $result['image_height'] ?? null;
+                        $processedResult['metadata'] = $result['metadata'] ?? [];
+                    }
+                    
+                    $results[] = $processedResult;
+                } else {
+                    $errorCount++;
                     $results[] = [
                         'success' => false,
-                        'url' => $url,
+                        'url' => $result['url'],
                         'error' => $result['error'],
-                        'image_url' => null,
-                        'title' => null,
-                        'description' => null
-                    ];
-                } else {
-                    $results[] = [
-                        'success' => true,
-                        'url' => $url,
-                        'image_url' => $result['image_url'] ?? null,
                         'title' => $result['title'] ?? null,
                         'description' => $result['description'] ?? null,
-                        'error' => null
+                        'metadata' => $result['metadata'] ?? []
                     ];
                 }
             }
 
             return response()->json([
                 'success' => true,
-                'total' => count($urls),
-                'results' => $results
+                'total_urls' => count($urls),
+                'successful_extractions' => $successCount,
+                'failed_extractions' => $errorCount,
+                'success_rate' => round(($successCount / count($urls)) * 100, 1),
+                'processing_time_seconds' => $processingTime,
+                'results' => $results,
+                'timestamp' => now()->toISOString()
             ]);
 
-        } catch (\Exception $e) {
-            Log::error('Error fetching multiple news images: ' . $e->getMessage());
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Server error occurred',
-                'details' => $e->getMessage()
+                'error' => 'Validation failed',
+                'details' => $e->errors(),
+                'timestamp' => now()->toISOString()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error fetching multiple news images: ' . $e->getMessage(), [
+                'urls_count' => count($request->input('urls', [])),
+                'stack_trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'error' => 'Internal server error',
+                'message' => 'Failed to process multiple URLs',
+                'timestamp' => now()->toISOString()
             ], 500);
         }
     }
