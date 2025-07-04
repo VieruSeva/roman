@@ -165,7 +165,7 @@ export const MainPageNews = () => {
                 ) : item.id === 9 ? (
                   // Special image for the Green Transition news - prioritize local image
                   <img 
-                    src="/siteik/images/trans1.jpg"
+                    src="/images/trans1.jpg"
                     alt="Tranziția Verde a Republicii Moldova" 
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                     onError={(e) => {
