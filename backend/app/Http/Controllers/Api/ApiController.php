@@ -176,55 +176,85 @@ class ApiController extends Controller
     }
 
     /**
-     * Fetch image from news article URL
-     * Simple implementation following PHP guide
+     * Fetch image from news article URL - COMPLETELY REWRITTEN
+     * New robust implementation with multiple extraction methods and caching
      */
     public function fetchNewsImage(Request $request)
     {
         try {
-            // Validate the URL parameter
+            // Enhanced validation
             $validated = $request->validate([
-                'url' => 'required|url'
+                'url' => 'required|url|max:2048',
+                'force_refresh' => 'boolean',
+                'include_metadata' => 'boolean'
             ]);
 
             $url = $validated['url'];
+            $forceRefresh = $validated['force_refresh'] ?? false;
+            $includeMetadata = $validated['include_metadata'] ?? true;
             
-            // Extract image using our rewritten function
-            $result = $this->extractImageFromUrl($url);
+            // Use new ImageExtractor service
+            $extractor = app(\App\Services\ImageExtractorService::class);
+            
+            // Clear cache if force refresh requested
+            if ($forceRefresh) {
+                $extractor->clearCache($url);
+            }
+            
+            // Extract image data
+            $result = $extractor->extractFromUrl($url);
 
-            // Return clean response
-            if (isset($result['error'])) {
+            // Enhance response format
+            if ($result['success']) {
+                $response = [
+                    'success' => true,
+                    'url' => $url,
+                    'image_url' => $result['image_url'],
+                    'title' => $result['title'],
+                    'description' => $result['description'],
+                    'extraction_method' => $result['extraction_method'],
+                    'cached' => $result['cached'] ?? false,
+                    'timestamp' => $result['timestamp'] ?? now()->toISOString()
+                ];
+                
+                // Add optional metadata
+                if ($includeMetadata) {
+                    $response['image_alt'] = $result['image_alt'] ?? null;
+                    $response['image_width'] = $result['image_width'] ?? null;
+                    $response['image_height'] = $result['image_height'] ?? null;
+                    $response['metadata'] = $result['metadata'] ?? [];
+                }
+                
+                return response()->json($response);
+            } else {
                 return response()->json([
                     'success' => false,
                     'url' => $url,
                     'error' => $result['error'],
-                    'image_url' => null,
-                    'title' => null,
-                    'description' => null
+                    'title' => $result['title'] ?? null,
+                    'description' => $result['description'] ?? null,
+                    'metadata' => $result['metadata'] ?? [],
+                    'timestamp' => now()->toISOString()
                 ], 400);
             }
-
-            return response()->json([
-                'success' => true,
-                'url' => $url,
-                'image_url' => $result['image_url'] ?? null,
-                'title' => $result['title'] ?? null,
-                'description' => $result['description'] ?? null,
-                'error' => null
-            ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Invalid URL provided',
-                'details' => $e->errors()
+                'error' => 'Validation failed',
+                'details' => $e->errors(),
+                'timestamp' => now()->toISOString()
             ], 422);
         } catch (\Exception $e) {
-            Log::error('Error in fetchNewsImage: ' . $e->getMessage());
+            Log::error('Error in fetchNewsImage: ' . $e->getMessage(), [
+                'url' => $request->input('url'),
+                'stack_trace' => $e->getTraceAsString()
+            ]);
             return response()->json([
                 'success' => false,
-                'error' => 'Server error occurred',
-                'details' => $e->getMessage()
+                'error' => 'Internal server error',
+                'message' => 'Failed to extract image data',
+                'timestamp' => now()->toISOString()
             ], 500);
         }
     }
