@@ -1264,7 +1264,7 @@ https://example.com/news/article3"></textarea>
                                     <p><strong>🔗 Image URL:</strong> <a href="${data.image_url}" target="_blank">${data.image_url}</a></p>
                                     <p><strong>🛠️ Method:</strong> ${data.extraction_method}</p>
                                     <p><strong>⚡ Cached:</strong> ${data.cached ? "Yes" : "No"}</p>
-                                    <img src="${data.image_url}" alt="Extracted Image" class="image-preview" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <img src="\${data.image_url}" alt="Extracted Image" class="image-preview" onerror="this.style.display=\\'none\\'; this.nextElementSibling.style.display=\\'block\\';">
                                     <p style="display:none; color:red;">⚠️ Image failed to load</p>
                             `;
                             
