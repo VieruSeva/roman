@@ -244,67 +244,7 @@ const HomePage = () => {
     }
   }, [section]);
 
-  // Fetch images for latest news items when component mounts
-  useEffect(() => {
-    const fetchNewsImages = async () => {
-      try {
-        const urls = latestNewsData
-          .filter(news => news.url && news.url !== '#')
-          .map(news => news.url);
-        
-        console.log('Fetching images for URLs:', urls);
-        
-        if (urls.length === 0) {
-          console.log('No external URLs found');
-          setLoadingImages(false);
-          return;
-        }
-
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
-        console.log('Backend URL:', backendUrl);
-        
-        const apiUrl = `${backendUrl}/api/fetch-multiple-news-images`;
-        console.log('Calling API:', apiUrl);
-        
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(urls)
-        });
-
-        console.log('API Response status:', response.status);
-
-        if (response.ok) {
-          const results = await response.json();
-          console.log('API Results:', results);
-          
-          const imageMap = {};
-          results.forEach(result => {
-            if (result.image_url) {
-              imageMap[result.url] = {
-                image_url: result.image_url,
-                title: result.title,
-                description: result.description
-              };
-            }
-          });
-          
-          console.log('Image Map:', imageMap);
-          setNewsImages(imageMap);
-        } else {
-          console.error('API call failed:', response.status, await response.text());
-        }
-      } catch (error) {
-        console.error('Error fetching news images:', error);
-      } finally {
-        setLoadingImages(false);
-      }
-    };
-
-    fetchNewsImages();
-  }, []);
+  // Simplified image display - no more API fetching needed
 
   return (
     <motion.div 
