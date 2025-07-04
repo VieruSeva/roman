@@ -248,7 +248,7 @@ const NewsPage = () => {
     }
   ];
 
-  // SECTION 3: LATEST NEWS DATA - PRIMA STIRE cu imaginea conferintei
+  // SECTION 3: LATEST NEWS DATA - Beautiful bakery images instead of URL extraction
   const latestNewsData = [
     {
       id: 9,
@@ -307,7 +307,7 @@ const NewsPage = () => {
       date: "30 martie 2025",
       author: "MDED.gov.md",
       category: "programe",
-      image: "https://images.unsplash.com/photo-1551295022-de5522c94e08", // Professional regional development image
+      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff", // Beautiful artisan bread
       readTime: "6 min",
       url: "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/"
     },
@@ -318,7 +318,7 @@ const NewsPage = () => {
       date: "29 martie 2025",
       author: "Agroexpert.md",
       category: "piata",
-      image: null, // Fixed: Use API image instead of broken Unsplash URL
+      image: "https://images.pexels.com/photos/745988/pexels-photo-745988.jpeg", // Hands holding fresh bread
       readTime: "4 min",
       url: "https://agroexpert.md/rom/novosti/r-moldova-exporta-mai-multa-faina-dar-la-un-pret-mult-mai-mic"
     },
@@ -329,7 +329,7 @@ const NewsPage = () => {
       date: "15 ianuarie 2025",
       author: "Stiri.md",
       category: "panificatie",
-      image: null, // Fixed: Use API image instead of broken Unsplash URL
+      image: "https://images.pexels.com/photos/205961/pexels-photo-205961.jpeg", // Bakery display case
       readTime: "5 min",
       url: "https://stiri.md/article/social/tot-mai-multi-pasionati-de-panificatie-descopera-farmecul-painii-cu-maia/"
     },
@@ -340,7 +340,7 @@ const NewsPage = () => {
       date: "12 ianuarie 2025",
       author: "Stiri.md",
       category: "piata",
-      image: null, // Fixed: Use API image instead of broken Unsplash URL
+      image: "https://images.pexels.com/photos/2135/food-france-morning-breakfast.jpg", // Golden croissants
       readTime: "3 min",
       url: "https://stiri.md/article/economic/in-transnistria-se-vor-scumpi-faina-si-painea/"
     },
@@ -351,7 +351,7 @@ const NewsPage = () => {
       date: "10 ianuarie 2025",
       author: "Stiri.md",
       category: "piata",
-      image: null, // Fixed: Use API image instead of broken Unsplash URL
+      image: "https://images.unsplash.com/photo-1627308595181-fa2b6f5f04e9", // Sourdough loaf
       readTime: "4 min",
       url: "https://stiri.md/article/economic/ion-perju-preturile-s-au-majorat-nejustificat-grau-in-tara-este/"
     },
@@ -362,7 +362,7 @@ const NewsPage = () => {
       date: "21 februarie 2025",
       author: "Agora.md",
       category: "business",
-      image: null, // Fixed: Use API image instead of broken Unsplash URL
+      image: "https://images.pexels.com/photos/32792822/pexels-photo-32792822.jpeg", // Basket of artisan breads
       readTime: "6 min",
       url: "https://agora.md/2025/02/21/cel-mai-mare-producator-din-industria-de-panificatie-din-moldova-inregistreaza-un-profit-record"
     },
@@ -373,7 +373,7 @@ const NewsPage = () => {
       date: "15 decembrie 2024",
       author: "Europa Liberă",
       category: "tendinte",
-      image: null, // Fixed: Use API image instead of broken Unsplash URL
+      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff", // Beautiful artisan bread
       readTime: "7 min",
       url: "https://moldova.europalibera.org/a/27188328.html"
     }
