@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Link } from 'react-router-dom';
 import { PageHero } from '../components/PageHero';
-import { FaArrowLeft, FaFilePdf, FaDownload, FaFileWord } from 'react-icons/fa';
+import { FaArrowLeft, FaFilePdf, FaDownload, FaFileWord, FaEye } from 'react-icons/fa';
 import main3 from "../images/main3.jpg";
 
 // Import the PDF documents
