@@ -190,7 +190,7 @@ class BackendTester:
 
 def main():
     # Get backend URL from environment
-    backend_url = "https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com"
+    backend_url = "https://014f8e48-d857-4a02-8616-4eab2e30ac63.preview.emergentagent.com"
     
     print(f"Testing backend at: {backend_url}")
     tester = BackendTester(backend_url)

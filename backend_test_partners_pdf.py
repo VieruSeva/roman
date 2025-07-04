@@ -53,7 +53,7 @@ class PartnersPDFTester:
 
 def main():
     # Get backend URL from environment or use default
-    backend_url = os.environ.get('REACT_APP_BACKEND_URL', 'https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com')
+    backend_url = os.environ.get('REACT_APP_BACKEND_URL', 'https://014f8e48-d857-4a02-8616-4eab2e30ac63.preview.emergentagent.com')
     
     print(f"Testing against backend URL: {backend_url}")
     

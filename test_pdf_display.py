@@ -57,7 +57,7 @@ def test_pdf_endpoint(url, description):
 
 def main():
     # Base URL
-    base_url = "https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com"
+    base_url = "https://014f8e48-d857-4a02-8616-4eab2e30ac63.preview.emergentagent.com"
     
     # Test all three PDF endpoints
     results = []
