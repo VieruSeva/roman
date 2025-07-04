@@ -158,6 +158,7 @@ const HomePage = () => {
       url: "https://moldova.europalibera.org/a/27188328.html"
     }
   ];
+  
   // Helper functions for latest news section
   const toggleReadMore = (id) => {
     setExpandedItemId(expandedItemId === id ? null : id);
@@ -304,27 +305,6 @@ const HomePage = () => {
 
     fetchNewsImages();
   }, []);
-    helloWorldApi();
-    
-    // Initialize AOS animation library with enhanced settings
-    AOS.init({
-      duration: 1000,
-      once: true,
-      easing: 'ease-in-out',
-      mirror: true,
-      anchorPlacement: 'top-bottom'
-    });
-    
-    // If section is specified in URL, scroll to that section
-    if (section === 'despre-noi') {
-      setTimeout(() => {
-        const aboutSection = document.getElementById('despre-noi');
-        if (aboutSection) {
-          aboutSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 500);
-    }
-  }, [section]);
 
   return (
     <motion.div 
@@ -382,7 +362,7 @@ const HomePage = () => {
         </div>
       </section>
       
-      {/* SECTION 3: LATEST NEWS - Modern Polished Design with External Images (copied from NewsPage) */}
+      {/* LATEST NEWS SECTION - Modern Polished Design with External Images (copied from NewsPage) */}
       <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
