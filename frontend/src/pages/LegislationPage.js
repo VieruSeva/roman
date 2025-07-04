@@ -162,14 +162,23 @@ const LegislationPage = () => {
                     <div className="flex-1">
                       <h3 className="text-xl font-bold mb-2 font-heading text-gray-800">{doc.title}</h3>
                       <p className="text-gray-600 mb-4">{doc.description}</p>
-                      <a
-                        href={doc.file}
-                        download
-                        className="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-md font-medium hover:bg-primary-600 transition-colors duration-300"
-                      >
-                        <FaDownload className="mr-2" />
-                        Descarcă {doc.type.toUpperCase()}
-                      </a>
+                      <div className="flex items-center space-x-3">
+                        <button
+                          onClick={() => openPreview(doc.file, doc.title)}
+                          className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition-colors duration-300"
+                        >
+                          <FaEye className="mr-2" />
+                          Previzualizare
+                        </button>
+                        <a
+                          href={doc.file}
+                          download
+                          className="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-md font-medium hover:bg-primary-600 transition-colors duration-300"
+                        >
+                          <FaDownload className="mr-2" />
+                          Descarcă {doc.type.toUpperCase()}
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
