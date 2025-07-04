@@ -129,7 +129,7 @@ const NewsPage = () => {
       startDate: "20 Mai 2025",
       endDate: "20 Mai 2026",
       location: "Chișinău, Republica Moldova",
-      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0",
+      image: "https://images.pexels.com/photos/745988/pexels-photo-745988.jpeg", // Hands holding fresh bread - perfect for training/capacity building
       url: "https://euneighbourseast.eu/ro/opportunities/unido-si-ue-lanseaza-un-program-de-consolidare-a-capacitatilor-pentru-imm-uri-operatori-din-sectorul-alimentar-si-fermieri/",
       fullContent: "UNIDO și UE lansează un program amplu de consolidare a capacităților pentru întreprinderile mici și mijlocii, operatori din sectorul alimentar și fermieri. Acest program strategic se va desfășura pe parcursul unui an și va oferi sprijin tehnic, financiar și consultanță specializată pentru afacerile din domeniul agroalimentar. Participanții vor beneficia de acces la cele mai noi tehnologii și metode de producție, sesiuni de instruire pentru îmbunătățirea calității produselor și dezvoltarea de noi piețe de desfacere. De asemenea, programul include componente legate de sustenabilitate, reducerea amprentei de carbon și adaptarea la standardele europene de siguranță alimentară. Înscrierile pentru primele sesiuni de training încep de pe 1 aprilie 2025."
     },
