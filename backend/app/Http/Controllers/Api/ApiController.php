@@ -346,8 +346,9 @@ class ApiController extends Controller
             ];
             
             if (file_exists($filePath)) {
-                return response()->download($filePath, 'industria-bauturilor.pdf', [
-                    'Content-Type' => 'application/pdf'
+                return response()->file($filePath, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="industria-bauturilor.pdf"'
                 ]);
             }
         }
