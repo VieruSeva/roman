@@ -386,7 +386,7 @@ class ApiController extends Controller
 
     public function downloadMinist1()
     {
-        $filePath = public_path('../frontend/src/documents/minist1.pdf');
+        $filePath = '/app/frontend/src/documents/minist1.pdf';
         
         if (file_exists($filePath)) {
             return response()->download($filePath, 'minist1.pdf', [
@@ -399,7 +399,7 @@ class ApiController extends Controller
 
     public function downloadMinist2()
     {
-        $filePath = public_path('../frontend/src/documents/minist2.pdf');
+        $filePath = '/app/frontend/src/documents/minist2.pdf';
         
         if (file_exists($filePath)) {
             return response()->download($filePath, 'minist2.pdf', [
@@ -412,7 +412,7 @@ class ApiController extends Controller
 
     public function downloadMinist3()
     {
-        $filePath = public_path('../frontend/src/documents/minist3.docx');
+        $filePath = '/app/frontend/src/documents/minist3.docx';
         
         if (file_exists($filePath)) {
             return response()->download($filePath, 'minist3.docx', [
@@ -425,7 +425,7 @@ class ApiController extends Controller
 
     public function downloadMinist4()
     {
-        $filePath = public_path('../frontend/src/documents/minist4.pdf');
+        $filePath = '/app/frontend/src/documents/minist4.pdf';
         
         if (file_exists($filePath)) {
             return response()->download($filePath, 'minist4.pdf', [
