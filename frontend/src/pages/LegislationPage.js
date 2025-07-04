@@ -7,16 +7,6 @@ import { PageHero } from '../components/PageHero';
 import { FaArrowLeft, FaFilePdf, FaDownload, FaFileWord, FaEye } from 'react-icons/fa';
 import main3 from "../images/main3.jpg";
 
-// Import the PDF documents
-import hotarareCerinte from "../documents/HOTĂRÂRE_Cerinţelor_Produse_de_panificaţie_şi_paste_făinoase.pdf";
-import legeaComertuluiInterior from "../documents/Legea cu privirea la comerțul interior.pdf";
-import legeaApaaPotabila from "../documents/Legea privind calitatea apei potabile.pdf";
-import legeaCeriale from "../documents/Legea privind depozitatea cerialelor.pdf";
-import legeaSigurantaAlimentelor from "../documents/Legea privind siguranța alimentelor.pdf";
-import legeaIntreprinderi from "../documents/Legea privind întreprinderile mici și mijlocii.pdf";
-import legeaInformarea from "../documents/Legea_privind_informarea_consumatorului_cu_privire_la_produsele.pdf";
-import linkDoc from "../documents/link.docx";
-
 const LegislationPage = () => {
   const [previewModal, setPreviewModal] = useState({ isOpen: false, url: '', title: '' });
   
