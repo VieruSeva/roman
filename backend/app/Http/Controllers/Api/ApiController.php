@@ -402,8 +402,9 @@ class ApiController extends Controller
         $filePath = '/app/frontend/src/documents/minist1.pdf';
         
         if (file_exists($filePath)) {
-            return response()->download($filePath, 'minist1.pdf', [
-                'Content-Type' => 'application/pdf'
+            return response()->file($filePath, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="minist1.pdf"'
             ]);
         }
         
