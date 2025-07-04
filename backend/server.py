@@ -155,15 +155,13 @@ async def fetch_news_image(request: NewsImageRequest):
 async def fetch_multiple_news_images(request: Request):
     """
     Fetch images from multiple news article URLs
+    Returns array format for frontend compatibility
     """
     try:
         urls = await request.json()
         
         if not isinstance(urls, list) or not urls:
-            return {
-                "success": False,
-                "error": "Please provide an array of URLs"
-            }
+            return []
 
         results = []
         
@@ -171,12 +169,11 @@ async def fetch_multiple_news_images(request: Request):
             # Validate each URL
             if not isinstance(url, str) or not url.startswith(('http://', 'https://')):
                 results.append({
-                    "success": False,
                     "url": url,
-                    "error": "Invalid URL format",
                     "image_url": None,
                     "title": None,
-                    "description": None
+                    "description": None,
+                    "error": "Invalid URL format"
                 })
                 continue
 
@@ -184,16 +181,14 @@ async def fetch_multiple_news_images(request: Request):
             
             if "error" in result:
                 results.append({
-                    "success": False,
                     "url": url,
-                    "error": result["error"],
                     "image_url": None,
                     "title": None,
-                    "description": None
+                    "description": None,
+                    "error": result["error"]
                 })
             else:
                 results.append({
-                    "success": True,
                     "url": url,
                     "image_url": result.get("image_url"),
                     "title": result.get("title"),
@@ -201,19 +196,11 @@ async def fetch_multiple_news_images(request: Request):
                     "error": None
                 })
 
-        return {
-            "success": True,
-            "total": len(urls),
-            "results": results
-        }
+        return results
 
     except Exception as e:
         logger.error(f"Error fetching multiple news images: {str(e)}")
-        return {
-            "success": False,
-            "error": "Server error occurred",
-            "details": str(e)
-        }
+        return []
 
 @app.get("/api/test-image-extraction", response_class=HTMLResponse)
 async def test_image_extraction():
