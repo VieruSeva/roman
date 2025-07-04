@@ -229,31 +229,73 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Fetch images from multiple news article URLs
+     */
     public function fetchMultipleNewsImages(Request $request)
     {
         try {
             $urls = $request->json()->all();
             
-            if (!is_array($urls)) {
-                return response()->json(['error' => 'Invalid input format'], 400);
+            if (!is_array($urls) || empty($urls)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Please provide an array of URLs'
+                ], 400);
             }
 
             $results = [];
+            
             foreach ($urls as $url) {
+                // Validate each URL
+                if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                    $results[] = [
+                        'success' => false,
+                        'url' => $url,
+                        'error' => 'Invalid URL format',
+                        'image_url' => null,
+                        'title' => null,
+                        'description' => null
+                    ];
+                    continue;
+                }
+
                 $result = $this->extractImageFromUrl($url);
-                $results[] = [
-                    'url' => $url,
-                    'image_url' => $result['image_url'] ?? null,
-                    'title' => $result['title'] ?? null,
-                    'description' => $result['description'] ?? null,
-                    'error' => $result['error'] ?? null
-                ];
+                
+                if (isset($result['error'])) {
+                    $results[] = [
+                        'success' => false,
+                        'url' => $url,
+                        'error' => $result['error'],
+                        'image_url' => null,
+                        'title' => null,
+                        'description' => null
+                    ];
+                } else {
+                    $results[] = [
+                        'success' => true,
+                        'url' => $url,
+                        'image_url' => $result['image_url'] ?? null,
+                        'title' => $result['title'] ?? null,
+                        'description' => $result['description'] ?? null,
+                        'error' => null
+                    ];
+                }
             }
 
-            return response()->json($results);
+            return response()->json([
+                'success' => true,
+                'total' => count($urls),
+                'results' => $results
+            ]);
+
         } catch (\Exception $e) {
             Log::error('Error fetching multiple news images: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'error' => 'Server error occurred',
+                'details' => $e->getMessage()
+            ], 500);
         }
     }
 
