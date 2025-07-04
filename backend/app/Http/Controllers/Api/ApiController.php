@@ -380,127 +380,61 @@ class ApiController extends Controller
     }
 
     /**
-     * Extract image URL from news article URL
-     * Based on PHP implementation using og:image meta tag
-     * 
-     * @param string $url News article URL
-     * @return array|null Array with image_url or null if not found
+     * NEW: Clear image extraction cache for a specific URL
      */
-    private function extractImageFromUrl($url)
+    public function clearImageCache(Request $request)
     {
         try {
-            // 1. Load HTML content from the news page
-            $client = new Client([
-                'timeout' => 15,
-                'headers' => [
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-                ]
+            $validated = $request->validate([
+                'url' => 'required|url|max:2048'
             ]);
-            
-            $response = $client->get($url);
-            
-            if ($response->getStatusCode() !== 200) {
-                return ['error' => 'Failed to load page: HTTP ' . $response->getStatusCode()];
-            }
 
-            $html = $response->getBody()->getContents();
-            
-            if (empty($html)) {
-                return ['error' => 'Empty response from server'];
-            }
+            $extractor = app(\App\Services\ImageExtractorService::class);
+            $result = $extractor->clearCache($validated['url']);
 
-            // 2. Parse HTML and look for og:image meta tag
-            $crawler = new Crawler($html);
-            
-            // Look for Open Graph image meta tag
-            $metaTags = $crawler->filter('meta');
-            
-            foreach ($metaTags as $tag) {
-                $property = $tag->getAttribute('property');
-                $content = $tag->getAttribute('content');
-                
-                // Check if this is the og:image tag
-                if ($property === 'og:image' && !empty($content)) {
-                    // Make sure it's an absolute URL
-                    $imageUrl = $content;
-                    
-                    // Handle relative URLs
-                    if (strpos($imageUrl, '//') === 0) {
-                        $imageUrl = 'https:' . $imageUrl;
-                    } elseif (strpos($imageUrl, '/') === 0) {
-                        $parsed = parse_url($url);
-                        $imageUrl = $parsed['scheme'] . '://' . $parsed['host'] . $imageUrl;
-                    } elseif (!filter_var($imageUrl, FILTER_VALIDATE_URL)) {
-                        // Relative URL without leading slash
-                        $parsed = parse_url($url);
-                        $imageUrl = $parsed['scheme'] . '://' . $parsed['host'] . '/' . ltrim($imageUrl, '/');
-                    }
-                    
-                    return [
-                        'image_url' => $imageUrl,
-                        'title' => $this->extractTitle($crawler),
-                        'description' => $this->extractDescription($crawler)
-                    ];
-                }
-            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Cache cleared for URL',
+                'url' => $validated['url'],
+                'timestamp' => now()->toISOString()
+            ]);
 
-            // If no og:image found, return null
-            return ['error' => 'No og:image meta tag found'];
-
-        } catch (RequestException $e) {
-            Log::error('HTTP Request failed: ' . $e->getMessage());
-            return ['error' => 'Failed to fetch page: ' . $e->getMessage()];
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Validation failed',
+                'details' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
-            Log::error('Error extracting image: ' . $e->getMessage());
-            return ['error' => 'Error processing page: ' . $e->getMessage()];
+            Log::error('Error clearing image cache: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to clear cache'
+            ], 500);
         }
     }
 
     /**
-     * Extract title from page
+     * NEW: Clear all image extraction cache
      */
-    private function extractTitle($crawler)
+    public function clearAllImageCache()
     {
         try {
-            // Try og:title first
-            $ogTitle = $crawler->filter('meta[property="og:title"]')->first();
-            if ($ogTitle->count() > 0) {
-                return trim($ogTitle->attr('content'));
-            }
+            $extractor = app(\App\Services\ImageExtractorService::class);
+            $result = $extractor->clearAllCache();
 
-            // Fallback to title tag
-            $titleTag = $crawler->filter('title')->first();
-            if ($titleTag->count() > 0) {
-                return trim($titleTag->text());
-            }
+            return response()->json([
+                'success' => true,
+                'message' => 'All image extraction cache cleared',
+                'timestamp' => now()->toISOString()
+            ]);
 
-            return null;
         } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    /**
-     * Extract description from page
-     */
-    private function extractDescription($crawler)
-    {
-        try {
-            // Try og:description first
-            $ogDesc = $crawler->filter('meta[property="og:description"]')->first();
-            if ($ogDesc->count() > 0) {
-                return trim($ogDesc->attr('content'));
-            }
-
-            // Fallback to meta description
-            $metaDesc = $crawler->filter('meta[name="description"]')->first();
-            if ($metaDesc->count() > 0) {
-                return trim($metaDesc->attr('content'));
-            }
-
-            return null;
-        } catch (\Exception $e) {
-            return null;
+            Log::error('Error clearing all image cache: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to clear all cache'
+            ], 500);
         }
     }
 
