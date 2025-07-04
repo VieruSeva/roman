@@ -229,103 +229,128 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Extract image URL from news article URL
+     * Based on PHP implementation using og:image meta tag
+     * 
+     * @param string $url News article URL
+     * @return array|null Array with image_url or null if not found
+     */
     private function extractImageFromUrl($url)
     {
         try {
-            // Special handling for agora.md bakery article
-            if (strpos($url, 'agora.md') !== false && strpos($url, 'cel-mai-mare-producator-din-industria-de-panificatie') !== false) {
-                return [
-                    'image_url' => 'https://images.pexels.com/photos/6291408/pexels-photo-6291408.jpeg',
-                    'title' => 'Cel mai mare producător din industria de panificație din Moldova înregistrează un profit record',
-                    'description' => 'Cel mai mare producător din industria de panificație din Moldova înregistrează un profit record pentru 2024'
-                ];
-            }
-
-            // Special handling for MDED.gov.md
-            if (strpos($url, 'mded.gov.md') !== false && strpos($url, 'ajutor-de-stat-regional-pentru-investitii') !== false) {
-                return [
-                    'image_url' => 'https://images.unsplash.com/photo-1551295022-de5522c94e08',
-                    'title' => 'Schema de ajutor de stat regional pentru investiții',
-                    'description' => 'Citește despre programul de ajutor de stat pentru investiții regionale pe site-ul oficial al MDED.'
-                ];
-            }
-
-            $client = new Client(['timeout' => 10]);
+            // 1. Load HTML content from the news page
+            $client = new Client([
+                'timeout' => 15,
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                ]
+            ]);
+            
             $response = $client->get($url);
             
             if ($response->getStatusCode() !== 200) {
-                return ['error' => 'HTTP ' . $response->getStatusCode()];
+                return ['error' => 'Failed to load page: HTTP ' . $response->getStatusCode()];
             }
 
             $html = $response->getBody()->getContents();
+            
+            if (empty($html)) {
+                return ['error' => 'Empty response from server'];
+            }
+
+            // 2. Parse HTML and look for og:image meta tag
             $crawler = new Crawler($html);
-
-            $imageUrl = null;
-            $title = null;
-            $description = null;
-
-            // Try to get Open Graph image
-            $ogImage = $crawler->filter('meta[property="og:image"]')->first();
-            if ($ogImage->count() > 0) {
-                $imageUrl = $ogImage->attr('content');
+            
+            // Look for Open Graph image meta tag
+            $metaTags = $crawler->filter('meta');
+            
+            foreach ($metaTags as $tag) {
+                $property = $tag->getAttribute('property');
+                $content = $tag->getAttribute('content');
                 
-                // Make sure it's an absolute URL
-                if (strpos($imageUrl, '//') === 0) {
-                    $imageUrl = 'https:' . $imageUrl;
-                } elseif (strpos($imageUrl, '/') === 0) {
-                    $parsed = parse_url($url);
-                    $imageUrl = $parsed['scheme'] . '://' . $parsed['host'] . $imageUrl;
-                }
-            } else {
-                // Fallback: look for the first large image
-                $images = $crawler->filter('img[src]');
-                foreach ($images as $img) {
-                    $src = $img->getAttribute('src');
-                    if ($src && !preg_match('/logo|icon|avatar|ad/i', $src)) {
-                        if (strpos($src, '//') === 0) {
-                            $src = 'https:' . $src;
-                        } elseif (strpos($src, '/') === 0) {
-                            $parsed = parse_url($url);
-                            $src = $parsed['scheme'] . '://' . $parsed['host'] . $src;
-                        }
-                        $imageUrl = $src;
-                        break;
+                // Check if this is the og:image tag
+                if ($property === 'og:image' && !empty($content)) {
+                    // Make sure it's an absolute URL
+                    $imageUrl = $content;
+                    
+                    // Handle relative URLs
+                    if (strpos($imageUrl, '//') === 0) {
+                        $imageUrl = 'https:' . $imageUrl;
+                    } elseif (strpos($imageUrl, '/') === 0) {
+                        $parsed = parse_url($url);
+                        $imageUrl = $parsed['scheme'] . '://' . $parsed['host'] . $imageUrl;
+                    } elseif (!filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+                        // Relative URL without leading slash
+                        $parsed = parse_url($url);
+                        $imageUrl = $parsed['scheme'] . '://' . $parsed['host'] . '/' . ltrim($imageUrl, '/');
                     }
+                    
+                    return [
+                        'image_url' => $imageUrl,
+                        'title' => $this->extractTitle($crawler),
+                        'description' => $this->extractDescription($crawler)
+                    ];
                 }
             }
 
-            // Get title
-            $ogTitle = $crawler->filter('meta[property="og:title"]')->first();
-            if ($ogTitle->count() > 0) {
-                $title = $ogTitle->attr('content');
-            } else {
-                $titleTag = $crawler->filter('title')->first();
-                if ($titleTag->count() > 0) {
-                    $title = trim($titleTag->text());
-                }
-            }
-
-            // Get description
-            $ogDesc = $crawler->filter('meta[property="og:description"]')->first();
-            if ($ogDesc->count() > 0) {
-                $description = $ogDesc->attr('content');
-            } else {
-                $metaDesc = $crawler->filter('meta[name="description"]')->first();
-                if ($metaDesc->count() > 0) {
-                    $description = $metaDesc->attr('content');
-                }
-            }
-
-            return [
-                'image_url' => $imageUrl,
-                'title' => $title,
-                'description' => $description
-            ];
+            // If no og:image found, return null
+            return ['error' => 'No og:image meta tag found'];
 
         } catch (RequestException $e) {
-            return ['error' => $e->getMessage()];
+            Log::error('HTTP Request failed: ' . $e->getMessage());
+            return ['error' => 'Failed to fetch page: ' . $e->getMessage()];
         } catch (\Exception $e) {
-            return ['error' => $e->getMessage()];
+            Log::error('Error extracting image: ' . $e->getMessage());
+            return ['error' => 'Error processing page: ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Extract title from page
+     */
+    private function extractTitle($crawler)
+    {
+        try {
+            // Try og:title first
+            $ogTitle = $crawler->filter('meta[property="og:title"]')->first();
+            if ($ogTitle->count() > 0) {
+                return trim($ogTitle->attr('content'));
+            }
+
+            // Fallback to title tag
+            $titleTag = $crawler->filter('title')->first();
+            if ($titleTag->count() > 0) {
+                return trim($titleTag->text());
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Extract description from page
+     */
+    private function extractDescription($crawler)
+    {
+        try {
+            // Try og:description first
+            $ogDesc = $crawler->filter('meta[property="og:description"]')->first();
+            if ($ogDesc->count() > 0) {
+                return trim($ogDesc->attr('content'));
+            }
+
+            // Fallback to meta description
+            $metaDesc = $crawler->filter('meta[name="description"]')->first();
+            if ($metaDesc->count() > 0) {
+                return trim($metaDesc->attr('content'));
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            return null;
         }
     }
 
