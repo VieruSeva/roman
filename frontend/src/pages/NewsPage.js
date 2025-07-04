@@ -22,8 +22,6 @@ const NewsPage = () => {
   const [activeCategory, setActiveCategory] = useState('toate');
   const [expandedItemId, setExpandedItemId] = useState(null);
   const [expandedEventId, setExpandedEventId] = useState(null);
-  const [newsImages, setNewsImages] = useState({});
-  const [loadingImages, setLoadingImages] = useState(true);
   const [previewModal, setPreviewModal] = useState({
     isOpen: false,
     url: '',
