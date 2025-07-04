@@ -553,16 +553,9 @@ const NewsPage = () => {
                     className="block h-full"
                   >
                     <div className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:border-primary-200 h-full flex flex-col">
-                      {/* Image Section with Static and External Fetching */}
+                      {/* Image Section with Beautiful Bakery Images */}
                       <div className="relative h-56 overflow-hidden">
-                        {loadingImages ? (
-                          <div className="h-full bg-gradient-to-br from-gray-200 via-gray-300 to-gray-200 animate-pulse flex items-center justify-center">
-                            <div className="text-center">
-                              <FaImage className="text-gray-400 text-4xl mx-auto mb-2 animate-pulse" />
-                              <div className="text-gray-500 text-sm">Se încarcă imaginea...</div>
-                            </div>
-                          </div>
-                        ) : news.image ? (
+                        {news.image ? (
                           <>
                             <img 
                               src={news.image} 
@@ -570,51 +563,14 @@ const NewsPage = () => {
                               className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                             />
                           </>
-                        ) : newsImages[news.url]?.image_url ? (
-                          <>
-                            <img 
-                              src={newsImages[news.url].image_url} 
-                              alt={news.title} 
-                              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                            {/* Source Attribution Overlay */}
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
-                                  <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-bold text-sm border border-white/30">
-                                    {news.author.charAt(0)}
-                                  </div>
-                                  <div>
-                                    <div className="text-white text-sm font-semibold">{news.author}</div>
-                                    <div className="text-white/80 text-xs">Sursă externă</div>
-                                  </div>
-                                </div>
-                                <div className="text-white/90 text-xs bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full border border-white/30">
-                                  🌐 Extern
-                                </div>
-                              </div>
-                            </div>
-                          </>
                         ) : (
                           <div className="h-full bg-gradient-to-br from-gray-100 via-blue-50 to-blue-100 flex items-center justify-center">
                             <div className="text-center">
                               <FaImage className="text-blue-400 text-4xl mx-auto mb-2" />
-                              <div className="text-blue-600 text-sm font-medium">Se încarcă imaginea...</div>
+                              <div className="text-blue-600 text-sm font-medium">Imagine indisponibilă</div>
                             </div>
                           </div>
                         )}
-                        
-                        {/* Fallback image div */}
-                        <div className="fallback-image h-full bg-gradient-to-br from-gray-100 via-blue-50 to-blue-100 hidden items-center justify-center">
-                          <div className="text-center">
-                            <FaImage className="text-blue-400 text-4xl mx-auto mb-2" />
-                            <div className="text-blue-600 text-sm font-medium">Imagine indisponibilă</div>
-                          </div>
-                        </div>
                         
                         {/* Category badge */}
                         <div className="absolute top-4 right-4 bg-gradient-to-r from-primary-500 to-blue-500 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg border border-white/20 uppercase tracking-wide">
