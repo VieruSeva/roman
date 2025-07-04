@@ -12,7 +12,11 @@ const LegislationPage = () => {
   
   // Modal handlers
   const openPreview = (url, title) => {
-    setPreviewModal({ isOpen: true, url, title });
+    // For DOCX files, use Google Docs Viewer
+    const previewUrl = url.endsWith('.docx') 
+      ? `https://docs.google.com/viewer?url=${window.location.origin}${url}&embedded=true`
+      : url;
+    setPreviewModal({ isOpen: true, url: previewUrl, title });
   };
 
   const closePreview = () => {
