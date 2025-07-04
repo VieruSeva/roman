@@ -368,8 +368,9 @@ class ApiController extends Controller
         
         foreach ($possiblePaths as $filePath) {
             if (file_exists($filePath)) {
-                return response()->download($filePath, 'oferta-lactate-ro.pdf', [
-                    'Content-Type' => 'application/pdf'
+                return response()->file($filePath, [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'inline; filename="oferta-lactate-ro.pdf"'
                 ]);
             }
         }
