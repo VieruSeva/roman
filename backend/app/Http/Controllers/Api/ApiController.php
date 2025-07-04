@@ -331,13 +331,20 @@ class ApiController extends Controller
 
     public function downloadIndustriaBauturilor()
     {
-        // Try multiple possible locations
+        // Debug file paths
         $possiblePaths = [
             '/app/frontend/public/industria-bauturilor.pdf',
             '/app/frontend/src/documents/Industria Băuturilor .pdf', // Note the spaces
         ];
         
+        $debug = [];
         foreach ($possiblePaths as $filePath) {
+            $debug[] = [
+                'path' => $filePath,
+                'exists' => file_exists($filePath),
+                'readable' => is_readable($filePath)
+            ];
+            
             if (file_exists($filePath)) {
                 return response()->download($filePath, 'industria-bauturilor.pdf', [
                     'Content-Type' => 'application/pdf'
@@ -345,7 +352,10 @@ class ApiController extends Controller
             }
         }
         
-        return response()->json(['error' => 'File not found'], 404);
+        return response()->json([
+            'error' => 'File not found',
+            'debug' => $debug
+        ], 404);
     }
 
     public function downloadOfertaLactate()
