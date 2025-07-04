@@ -46,7 +46,7 @@ const LegislationPage = () => {
       id: 1,
       title: "HOTĂRÂRE Cu privire la aprobarea Cerinţelor de calitate pentru produse de panificaţie şi paste făinoase",
       description: "Hotărârea privind cerințele de calitate pentru produsele de panificație și paste făinoase.",
-      file: hotarareCerinte,
+      file: "/documents/HOTĂRÂRE_Cerinţelor_Produse_de_panificaţie_şi_paste_făinoase.pdf",
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -54,7 +54,7 @@ const LegislationPage = () => {
       id: 2,
       title: "Legea cu privire la comerțul interior",
       description: "Legea care reglementează activitățile de comerț interior.",
-      file: legeaComertuluiInterior,
+      file: "/documents/Legea cu privirea la comerțul interior.pdf",
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -62,7 +62,7 @@ const LegislationPage = () => {
       id: 3,
       title: "Legea privind calitatea apei potabile",
       description: "Legislația referitoare la calitatea apei potabile utilizate în industria alimentară.",
-      file: legeaApaaPotabila,
+      file: "/documents/Legea privind calitatea apei potabile.pdf",
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -70,7 +70,7 @@ const LegislationPage = () => {
       id: 4,
       title: "Legea privind depozitarea cerealelor",
       description: "Legea care reglementează condițiile de depozitare a cerealelor.",
-      file: legeaCeriale,
+      file: "/documents/Legea privind depozitatea cerialelor.pdf",
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -78,7 +78,7 @@ const LegislationPage = () => {
       id: 5,
       title: "Legea privind siguranța alimentelor",
       description: "Legislația esențială privind siguranța alimentelor și normele de calitate.",
-      file: legeaSigurantaAlimentelor,
+      file: "/documents/Legea privind siguranța alimentelor.pdf",
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -86,7 +86,7 @@ const LegislationPage = () => {
       id: 6,
       title: "Legea privind întreprinderile mici și mijlocii",
       description: "Cadrul legal pentru funcționarea întreprinderilor mici și mijlocii din industria alimentară.",
-      file: legeaIntreprinderi,
+      file: "/documents/Legea privind întreprinderile mici și mijlocii.pdf",
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -94,7 +94,7 @@ const LegislationPage = () => {
       id: 7,
       title: "Legea privind informarea consumatorului cu privire la produse",
       description: "Legislația referitoare la informațiile ce trebuie furnizate consumatorilor despre produsele alimentare.",
-      file: legeaInformarea,
+      file: "/documents/Legea_privind_informarea_consumatorului_cu_privire_la_produsele.pdf",
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -102,7 +102,7 @@ const LegislationPage = () => {
       id: 8,
       title: "Resurse suplimentare - Link-uri utile",
       description: "Document cu link-uri utile către alte resurse legislative.",
-      file: linkDoc,
+      file: "/documents/link.docx",
       type: "docx",
       icon: <FaFileWord className="text-blue-500 text-2xl" />
     }
