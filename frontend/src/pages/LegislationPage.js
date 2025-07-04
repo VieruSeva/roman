@@ -18,6 +18,17 @@ import legeaInformarea from "../documents/Legea_privind_informarea_consumatorulu
 import linkDoc from "../documents/link.docx";
 
 const LegislationPage = () => {
+  const [previewModal, setPreviewModal] = useState({ isOpen: false, url: '', title: '' });
+  
+  // Modal handlers
+  const openPreview = (url, title) => {
+    setPreviewModal({ isOpen: true, url, title });
+  };
+
+  const closePreview = () => {
+    setPreviewModal({ isOpen: false, url: '', title: '' });
+  };
+
   useEffect(() => {
     // Initialize AOS animation library
     AOS.init({
