@@ -331,12 +331,18 @@ class ApiController extends Controller
 
     public function downloadIndustriaBauturilor()
     {
-        $filePath = public_path('../frontend/public/industria-bauturilor.pdf');
+        // Try multiple possible locations
+        $possiblePaths = [
+            public_path('../frontend/public/industria-bauturilor.pdf'),
+            public_path('../frontend/src/documents/Industria Băuturilor .pdf'), // Note the spaces
+        ];
         
-        if (file_exists($filePath)) {
-            return response()->download($filePath, 'industria-bauturilor.pdf', [
-                'Content-Type' => 'application/pdf'
-            ]);
+        foreach ($possiblePaths as $filePath) {
+            if (file_exists($filePath)) {
+                return response()->download($filePath, 'industria-bauturilor.pdf', [
+                    'Content-Type' => 'application/pdf'
+                ]);
+            }
         }
         
         return response()->json(['error' => 'File not found'], 404);
@@ -344,12 +350,17 @@ class ApiController extends Controller
 
     public function downloadOfertaLactate()
     {
-        $filePath = public_path('../frontend/public/oferta-lactate-ro.pdf');
+        $possiblePaths = [
+            public_path('../frontend/public/oferta-lactate-ro.pdf'),
+            public_path('../frontend/src/documents/Ofertă Lactate RO .pdf'), // Note the spaces
+        ];
         
-        if (file_exists($filePath)) {
-            return response()->download($filePath, 'oferta-lactate-ro.pdf', [
-                'Content-Type' => 'application/pdf'
-            ]);
+        foreach ($possiblePaths as $filePath) {
+            if (file_exists($filePath)) {
+                return response()->download($filePath, 'oferta-lactate-ro.pdf', [
+                    'Content-Type' => 'application/pdf'
+                ]);
+            }
         }
         
         return response()->json(['error' => 'File not found'], 404);
@@ -357,12 +368,17 @@ class ApiController extends Controller
 
     public function downloadOfertaCarne()
     {
-        $filePath = public_path('../frontend/public/oferta-carne-si-oua-ro.pdf');
+        $possiblePaths = [
+            public_path('../frontend/public/oferta-carne-si-oua-ro.pdf'),
+            public_path('../frontend/src/documents/Ofertă Carne și Ouă RO .pdf'), // Note the spaces
+        ];
         
-        if (file_exists($filePath)) {
-            return response()->download($filePath, 'oferta-carne-si-oua-ro.pdf', [
-                'Content-Type' => 'application/pdf'
-            ]);
+        foreach ($possiblePaths as $filePath) {
+            if (file_exists($filePath)) {
+                return response()->download($filePath, 'oferta-carne-si-oua-ro.pdf', [
+                    'Content-Type' => 'application/pdf'
+                ]);
+            }
         }
         
         return response()->json(['error' => 'File not found'], 404);
