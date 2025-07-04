@@ -20,8 +20,6 @@ const HomePage = () => {
   
   // State for latest news section
   const [expandedItemId, setExpandedItemId] = useState(null);
-  const [newsImages, setNewsImages] = useState({});
-  const [loadingImages, setLoadingImages] = useState(true);
   const [previewModal, setPreviewModal] = useState({
     isOpen: false,
     url: '',
