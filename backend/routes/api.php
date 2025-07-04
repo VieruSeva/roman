@@ -31,6 +31,8 @@ Route::get('/status/{status_id}', [ApiController::class, 'getStatusCheck']);
 // News image extraction endpoints
 Route::post('/fetch-news-image', [ApiController::class, 'fetchNewsImage']);
 Route::post('/fetch-multiple-news-images', [ApiController::class, 'fetchMultipleNewsImages']);
+Route::delete('/clear-image-cache', [ApiController::class, 'clearImageCache']);
+Route::delete('/clear-all-image-cache', [ApiController::class, 'clearAllImageCache']);
 
 // File download endpoints
 Route::get('/download/industria-bauturilor.pdf', [ApiController::class, 'downloadIndustriaBauturilor']);
