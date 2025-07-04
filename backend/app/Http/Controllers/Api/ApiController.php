@@ -15,7 +15,7 @@ class ApiController extends Controller
 {
     public function index()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com');
         
         $htmlContent = '
         <!DOCTYPE html>
@@ -593,7 +593,7 @@ class ApiController extends Controller
 
     public function preview()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com');
         
         $htmlContent = '
         <!DOCTYPE html>
@@ -659,7 +659,7 @@ class ApiController extends Controller
 
     public function links()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com');
         
         $htmlContent = '
         <!DOCTYPE html>
@@ -726,8 +726,8 @@ class ApiController extends Controller
             <div class="link-section">
                 <h2>Original Preview Link</h2>
                 <p>For reference, this was the original link you provided:</p>
-                <a class="button" href="https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com/" target="_blank">Open Original Site</a>
-                <p>URL: <code class="code">https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com/</code></p>
+                <a class="button" href="https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com/" target="_blank">Open Original Site</a>
+                <p>URL: <code class="code">https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com/</code></p>
             </div>
             
             <div class="link-section">
@@ -864,7 +864,7 @@ class ApiController extends Controller
 
     public function newPreview()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com');
         return redirect($previewUrl);
     }
 }

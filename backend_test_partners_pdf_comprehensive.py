@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 class PartnersPDFTester:
-    def __init__(self, base_url="https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com"):
+    def __init__(self, base_url="https://a8497826-ac6e-4e94-b4c8-4d942d87b11c.preview.emergentagent.com"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0
