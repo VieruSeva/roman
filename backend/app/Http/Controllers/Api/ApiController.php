@@ -175,28 +175,56 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Fetch image from news article URL
+     * Simple implementation following PHP guide
+     */
     public function fetchNewsImage(Request $request)
     {
         try {
+            // Validate the URL parameter
             $validated = $request->validate([
                 'url' => 'required|url'
             ]);
 
             $url = $validated['url'];
+            
+            // Extract image using our rewritten function
             $result = $this->extractImageFromUrl($url);
 
+            // Return clean response
+            if (isset($result['error'])) {
+                return response()->json([
+                    'success' => false,
+                    'url' => $url,
+                    'error' => $result['error'],
+                    'image_url' => null,
+                    'title' => null,
+                    'description' => null
+                ], 400);
+            }
+
             return response()->json([
+                'success' => true,
                 'url' => $url,
                 'image_url' => $result['image_url'] ?? null,
                 'title' => $result['title'] ?? null,
                 'description' => $result['description'] ?? null,
-                'error' => $result['error'] ?? null
+                'error' => null
             ]);
-        } catch (\Exception $e) {
-            Log::error('Error fetching news image: ' . $e->getMessage());
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'url' => $request->input('url'),
-                'error' => $e->getMessage()
+                'success' => false,
+                'error' => 'Invalid URL provided',
+                'details' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Error in fetchNewsImage: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => 'Server error occurred',
+                'details' => $e->getMessage()
             ], 500);
         }
     }
