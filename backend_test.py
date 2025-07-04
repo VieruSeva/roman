@@ -2,17 +2,20 @@
 import requests
 import sys
 import json
+import uuid
+from datetime import datetime
 
-class NewsImageTester:
+class BackendTester:
     def __init__(self, base_url):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0
+        self.created_status_id = None
 
-    def run_test(self, name, endpoint, method="GET", data=None, expected_status=200):
+    def run_test(self, name, endpoint, method="GET", data=None, expected_status=200, binary=False):
         """Run a single API test"""
         url = f"{self.base_url}/{endpoint}"
-        headers = {'Content-Type': 'application/json'}
+        headers = {'Content-Type': 'application/json'} if not binary else {}
         
         self.tests_run += 1
         print(f"\n🔍 Testing {name}...")
@@ -30,6 +33,9 @@ class NewsImageTester:
             self.tests_passed += 1
             print(f"✅ Passed - Status: {response.status_code}")
             
+            if binary:
+                return True, response.content
+            
             try:
                 return True, response.json()
             except:
@@ -39,6 +45,57 @@ class NewsImageTester:
             print(f"❌ Failed - Error: {str(e)}")
             return False, None
 
+    # Status Check API Tests
+    def test_create_status_check(self, client_name):
+        """Test creating a status check"""
+        success, response = self.run_test(
+            f"Create status check for client: {client_name}",
+            "api/status",
+            method="POST",
+            data={"client_name": client_name},
+            expected_status=200
+        )
+        
+        if success:
+            print(f"Response: {json.dumps(response, indent=2)}")
+            if 'id' in response:
+                self.created_status_id = response['id']
+                print(f"Created status check with ID: {self.created_status_id}")
+            return response
+        return None
+
+    def test_get_status_checks(self):
+        """Test retrieving all status checks"""
+        success, response = self.run_test(
+            "Get all status checks",
+            "api/status",
+            method="GET",
+            expected_status=200
+        )
+        
+        if success:
+            if isinstance(response, list):
+                print(f"Retrieved {len(response)} status checks")
+                if len(response) > 0:
+                    print(f"First status check: {json.dumps(response[0], indent=2)}")
+            return response
+        return None
+
+    def test_get_status_check_by_id(self, status_id):
+        """Test retrieving a specific status check by ID"""
+        success, response = self.run_test(
+            f"Get status check by ID: {status_id}",
+            f"api/status/{status_id}",
+            method="GET",
+            expected_status=200
+        )
+        
+        if success:
+            print(f"Response: {json.dumps(response, indent=2)}")
+            return response
+        return None
+
+    # News Image Extraction Tests
     def test_fetch_news_image(self, url):
         """Test the fetch-news-image endpoint with a specific URL"""
         success, response = self.run_test(
@@ -69,6 +126,7 @@ class NewsImageTester:
             return response
         return None
 
+    # News Ticker API Tests
     def test_news_ticker(self):
         """Test the news-ticker endpoint"""
         success, response = self.run_test(
@@ -82,263 +140,138 @@ class NewsImageTester:
             print(f"Total items: {response.get('total', 0)}")
             return response
         return None
-        
-    def test_latest_news_section(self):
-        """Test the news-ticker endpoint specifically for the 'Ultimele Noutăți' section"""
+
+    # File Download Tests
+    def test_download_pdf(self, pdf_name):
+        """Test downloading a PDF file"""
         success, response = self.run_test(
-            "Get news for 'Ultimele Noutăți' section",
-            "api/news-ticker",
+            f"Download PDF: {pdf_name}",
+            f"api/download/{pdf_name}",
             method="GET",
-            expected_status=200
+            expected_status=200,
+            binary=True
         )
         
-        if not success:
-            return None
-            
-        # Check if we have news items
-        if not response.get("success"):
-            print("❌ Failed - API response indicates failure")
-            return None
-            
-        items = response.get("items", [])
-        if not items:
-            print("❌ Failed - No news items returned")
-            return None
-            
-        # Filter for news items only (not events)
-        news_items = [item for item in items if item.get("type") == "news"]
-        
-        if len(news_items) < 3:
-            print(f"❌ Failed - Expected at least 3 news items, but got {len(news_items)}")
-            return None
-            
-        print(f"✅ Found {len(news_items)} news items for 'Ultimele Noutăți' section")
-        
-        # Check if each news item has required fields
-        valid_items = 0
-        for item in news_items[:6]:  # Check first 6 items as shown on main page
-            has_title = "title" in item and item["title"]
-            has_date = "date" in item and item["date"]
-            has_url = "url" in item
-            
-            if has_title and has_date and has_url:
-                valid_items += 1
-                print(f"✅ News item {item.get('id')} has all required fields")
+        if success:
+            # Check if it's a PDF (starts with %PDF)
+            if response[:4] == b'%PDF':
+                print(f"✅ Successfully downloaded PDF file: {pdf_name} ({len(response)} bytes)")
+                return True
             else:
-                missing = []
-                if not has_title: missing.append("title")
-                if not has_date: missing.append("date")
-                if not has_url: missing.append("url")
-                print(f"❌ News item {item.get('id')} is missing fields: {', '.join(missing)}")
-        
-        if valid_items >= 3:
-            print(f"✅ At least 3 valid news items found ({valid_items})")
-            return news_items
-        else:
-            print(f"❌ Failed - Expected at least 3 valid news items, but got {valid_items}")
-            return None
-            
-    def test_selective_link_behavior(self):
-        """Test the selective link behavior for news items"""
+                print(f"❌ Downloaded file is not a valid PDF: {pdf_name}")
+                return False
+        return False
+
+    # HTML Response Tests
+    def test_html_endpoint(self, endpoint, expected_title=None):
+        """Test an endpoint that returns HTML"""
         success, response = self.run_test(
-            "Test selective link behavior for news items",
-            "api/news-ticker",
+            f"Get HTML from endpoint: {endpoint}",
+            endpoint,
             method="GET",
             expected_status=200
         )
         
-        if not success:
-            return None
-            
-        # Check if we have news items
-        if not response.get("success"):
-            print("❌ Failed - API response indicates failure")
-            return None
-            
-        items = response.get("items", [])
-        if not items:
-            print("❌ Failed - No news items returned")
-            return None
-            
-        # Filter for news items only (not events)
-        news_items = [item for item in items if item.get("type") == "news"]
-        
-        # Find the document news item (Ministry of Agriculture)
-        document_news = None
-        for item in news_items:
-            if "Ministerul Agriculturii" in item.get("title", ""):
-                document_news = item
-                break
+        if success:
+            if isinstance(response, str) and "<!DOCTYPE html>" in response:
+                print(f"✅ Endpoint returned valid HTML ({len(response)} bytes)")
                 
-        if not document_news:
-            print("❌ Failed - Could not find Ministry of Agriculture news item")
-            return None
-            
-        # Check if it has the hasDocuments flag
-        if document_news.get("hasDocuments", False):
-            print(f"✅ SUCCESS: Ministry news item has hasDocuments=true")
-        else:
-            print(f"❌ FAILURE: Ministry news item does not have hasDocuments flag")
-            
-        # Find regular news items (without hasDocuments flag)
-        regular_news = [item for item in news_items if not item.get("hasDocuments", False)]
-        
-        if len(regular_news) < 1:
-            print("❌ Failed - Could not find any regular news items")
-            return None
-            
-        print(f"✅ SUCCESS: Found {len(regular_news)} regular news items")
-        
-        # Check if regular news items have URLs
-        news_with_urls = [item for item in regular_news if item.get("url") and item.get("url") != "#"]
-        
-        if len(news_with_urls) > 0:
-            print(f"✅ SUCCESS: Found {len(news_with_urls)} regular news items with URLs")
-        else:
-            print("❌ FAILURE: No regular news items have URLs")
-            
-        return {
-            "document_news": document_news,
-            "regular_news": regular_news
-        }
+                if expected_title and f"<title>{expected_title}</title>" in response:
+                    print(f"✅ HTML contains expected title: '{expected_title}'")
+                elif expected_title:
+                    print(f"❌ HTML does not contain expected title: '{expected_title}'")
+                    return False
+                
+                return True
+            else:
+                print(f"❌ Endpoint did not return valid HTML")
+                return False
+        return False
 
 def main():
     # Get backend URL from environment
     backend_url = "https://a9e898c1-ad61-4684-b17a-1c799a04aa0d.preview.emergentagent.com"
     
     print(f"Testing backend at: {backend_url}")
-    tester = NewsImageTester(backend_url)
+    tester = BackendTester(backend_url)
     
-    # Test 1: Test the news ticker to verify the "Ultimele Noutăți" section
-    print("\n=== Testing news ticker for 'Ultimele Noutăți' section ===")
-    news_items = tester.test_latest_news_section()
+    # Test HTML endpoints
+    print("\n=== Testing HTML Endpoints ===")
+    tester.test_html_endpoint("api", "API and Preview Links")
+    tester.test_html_endpoint("api/demo", "Live Demo")
+    tester.test_html_endpoint("api/preview", "Updated Site Preview")
+    tester.test_html_endpoint("api/links", "Site Preview Links")
     
-    # Test 2: Test the selective link behavior
-    print("\n=== Testing selective link behavior for news items ===")
-    selective_link_results = tester.test_selective_link_behavior()
+    # Test Status Check API
+    print("\n=== Testing Status Check API ===")
+    client_name = f"Test User {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    status_response = tester.test_create_status_check(client_name)
     
-    # Flag to track if we found the specific article we're looking for
-    found_transition_article = False
+    if status_response and tester.created_status_id:
+        # Test getting all status checks
+        all_statuses = tester.test_get_status_checks()
+        
+        # Test getting specific status check by ID
+        tester.test_get_status_check_by_id(tester.created_status_id)
+        
+        # Verify the created status is in the list
+        if all_statuses and isinstance(all_statuses, list):
+            found = False
+            for status in all_statuses:
+                if status.get('id') == tester.created_status_id:
+                    found = True
+                    break
+            
+            if found:
+                print(f"✅ Created status check (ID: {tester.created_status_id}) found in the list of all status checks")
+            else:
+                print(f"❌ Created status check (ID: {tester.created_status_id}) not found in the list of all status checks")
     
-    # Test for the specific requirements in the request
-    print("\n=== Testing specific requirements for 'Tranziția Verde a Republicii Moldova' article ===")
+    # Test News Image Extraction
+    print("\n=== Testing News Image Extraction ===")
+    # Test with the specific URL mentioned in the requirements
+    agora_url = "https://agora.md/2025/02/21/cel-mai-mare-producator-din-industria-de-panificatie-din-moldova-inregistreaza-un-profit-record"
+    agora_result = tester.test_fetch_news_image(agora_url)
     
-    # Get the news ticker data to check all locations
-    news_ticker_data = tester.test_news_ticker()
+    if agora_result:
+        expected_image = "https://images.pexels.com/photos/6291408/pexels-photo-6291408.jpeg"
+        if agora_result.get("image_url") == expected_image:
+            print(f"✅ Special handling for agora.md URL works correctly")
+        else:
+            print(f"❌ Special handling for agora.md URL failed. Expected: {expected_image}, Got: {agora_result.get('image_url')}")
     
-    if news_ticker_data and news_ticker_data.get('items'):
-        # Find the target article
-        target_article = None
-        for item in news_ticker_data.get('items', []):
-            if (item.get('title') == "Tranziția Verde a Republicii Moldova: Motor al Integrării Europene și Dezvoltării Durabile" and 
-                item.get('date') == "24 iunie 2025"):
-                target_article = item
-                found_transition_article = True
+    # Test multiple news images
+    urls = [
+        "https://agora.md/2025/02/21/cel-mai-mare-producator-din-industria-de-panificatie-din-moldova-inregistreaza-un-profit-record",
+        "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/"
+    ]
+    tester.test_fetch_multiple_news_images(urls)
+    
+    # Test News Ticker API
+    print("\n=== Testing News Ticker API ===")
+    news_ticker = tester.test_news_ticker()
+    
+    if news_ticker and news_ticker.get('items'):
+        # Check for Romanian text encoding
+        has_romanian_chars = False
+        for item in news_ticker.get('items', []):
+            title = item.get('title', '')
+            if 'ă' in title or 'ș' in title or 'ț' in title or 'î' in title or 'â' in title:
+                has_romanian_chars = True
                 break
         
-        if target_article:
-            print(f"\n=== FOUND TARGET ARTICLE: 'Tranziția Verde a Republicii Moldova' ===")
-            print(f"  Title: {target_article.get('title')}")
-            print(f"  Date: {target_article.get('date')}")
-            print(f"  URL: {target_article.get('url')}")
-            print(f"  Author: {target_article.get('author', 'Not specified')}")
-            print(f"  Category: {target_article.get('category', 'N/A')}")
-            print(f"  Has Images: {target_article.get('hasImages', False)}")
-            
-            # Check requirements
-            requirements_met = True
-            
-            # 1. Check date
-            if target_article.get('date') != "24 iunie 2025":
-                print(f"❌ FAILURE: Date should be '24 iunie 2025' but got: {target_article.get('date')}")
-                requirements_met = False
-            else:
-                print(f"✅ SUCCESS: Date is correct: '24 iunie 2025'")
-            
-            # 2. Check URL (should be "#" - no external link)
-            if target_article.get('url') != "#":
-                print(f"❌ FAILURE: URL should be '#' but got: {target_article.get('url')}")
-                requirements_met = False
-            else:
-                print(f"✅ SUCCESS: URL is correct: '#' (no external link)")
-            
-            # 3. Check author
-            if target_article.get('author') != "ANIPM":
-                print(f"❌ FAILURE: Author should be 'ANIPM' but got: {target_article.get('author', 'Not specified')}")
-                requirements_met = False
-            else:
-                print(f"✅ SUCCESS: Author is correct: 'ANIPM'")
-            
-            # 4. Check images
-            if not target_article.get('hasImages', False):
-                print(f"❌ FAILURE: Article should have images")
-                requirements_met = False
-            else:
-                print(f"✅ SUCCESS: Article has images")
-                
-                # Check for specific image
-                images = target_article.get('images', [])
-                print(f"  Images: {images}")
-                
-                # Check for specific image - both possible paths
-                images = target_article.get('images', [])
-                print(f"  Images: {images}")
-                
-                if "/siteik/images/trans1.jpg" in images:
-                    print(f"✅ SUCCESS: Article includes the image: '/siteik/images/trans1.jpg'")
-                    
-                    # Check if it's trying to use both paths
-                    if "/images/trans1.jpg" in images:
-                        print(f"⚠️ WARNING: Article is using both '/siteik/images/trans1.jpg' and '/images/trans1.jpg'")
-                elif "/images/trans1.jpg" in images:
-                    print(f"✅ SUCCESS: Article includes the image: '/images/trans1.jpg'")
-                else:
-                    print(f"❌ FAILURE: Article does not include either '/siteik/images/trans1.jpg' or '/images/trans1.jpg'")
-                    requirements_met = False
-            
-            if requirements_met:
-                print(f"\n✅ SUCCESS: All requirements for the 'Tranziția Verde a Republicii Moldova' article are met in the API!")
-            else:
-                print(f"\n❌ FAILURE: Some requirements for the 'Tranziția Verde a Republicii Moldova' article are not met in the API")
-        
-    if not found_transition_article:
-        print(f"❌ FAILURE: Could not find the 'Tranziția Verde a Republicii Moldova' article in the news feed")
-    
-    # Test 3: Test the specific MDED URL that should use the professional image
-    mded_url = "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/"
-    print("\n=== Testing specific MDED URL with ajutor-de-stat-regional-pentru-investitii ===")
-    mded_result = tester.test_fetch_news_image(mded_url)
-    
-    if mded_result:
-        image_url = mded_result.get("image_url")
-        expected_image = "https://images.unsplash.com/photo-1551295022-de5522c94e08"
-        
-        if image_url == expected_image:
-            print(f"✅ SUCCESS: Image URL matches expected professional image: {image_url}")
+        if has_romanian_chars:
+            print(f"✅ News ticker contains properly encoded Romanian characters")
         else:
-            print(f"❌ FAILURE: Image URL does not match expected. Got: {image_url}")
-            print(f"   Expected: {expected_image}")
+            print(f"❌ News ticker does not contain properly encoded Romanian characters")
     
-    # Test 4: Test multiple news images to verify batch processing
-    print("\n=== Testing multiple news images including MDED URL ===")
-    urls = [
-        "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/",
-        "https://stiri.md/article/social/tot-mai-multi-pasionati-de-panificatie-descopera-farmecul-painii-cu-maia/"
-    ]
-    
-    multiple_results = tester.test_fetch_multiple_news_images(urls)
-    
-    if multiple_results:
-        for result in multiple_results:
-            if "ajutor-de-stat-regional-pentru-investitii" in result.get("url", ""):
-                image_url = result.get("image_url")
-                expected_image = "https://images.unsplash.com/photo-1551295022-de5522c94e08"
-                
-                if image_url == expected_image:
-                    print(f"✅ SUCCESS: Multiple images - MDED image URL matches expected: {image_url}")
-                else:
-                    print(f"❌ FAILURE: Multiple images - MDED image URL does not match expected. Got: {image_url}")
-                    print(f"   Expected: {expected_image}")
+    # Test File Downloads
+    print("\n=== Testing File Downloads ===")
+    tester.test_download_pdf("industria-bauturilor.pdf")
+    tester.test_download_pdf("oferta-lactate-ro.pdf")
+    tester.test_download_pdf("oferta-carne-si-oua-ro.pdf")
+    tester.test_download_pdf("minist1.pdf")
+    tester.test_download_pdf("minist2.pdf")
     
     # Print summary
     print(f"\n📊 Tests passed: {tester.tests_passed}/{tester.tests_run}")
