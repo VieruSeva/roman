@@ -21,6 +21,7 @@ Route::get('/preview', [ApiController::class, 'preview']);
 Route::get('/new-preview', [ApiController::class, 'newPreview']);
 Route::get('/links', [ApiController::class, 'links']);
 Route::get('/demo', [ApiController::class, 'demo']);
+Route::get('/test-image-extraction', [ApiController::class, 'testImageExtraction']);
 
 // Status Check endpoints
 Route::post('/status', [ApiController::class, 'createStatusCheck']);
