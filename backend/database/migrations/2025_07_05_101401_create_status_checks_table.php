@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('status_checks', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->string('id')->primary(); // Using string UUID as primary key
+            $table->string('client_name');
+            $table->timestamp('timestamp');
+            $table->timestamps(); // Laravel's created_at and updated_at
         });
     }
 
