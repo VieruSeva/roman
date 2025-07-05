@@ -42,7 +42,7 @@ const LatestNewsPage = () => {
     ]
   };
 
-  // Updated news data with LOCAL images - No more API dependency!
+  // Updated news data with EXACT SAME images as NewsPage - Perfect match!
   const newsData = [
     {
       id: 9,
@@ -54,7 +54,7 @@ const LatestNewsPage = () => {
       readTime: "10 min",
       url: "#",
       hasImages: true,
-      image: trans1Image
+      image: trans1Image // Keep the existing conference image for this one
     },
     {
       id: 8,
@@ -66,7 +66,7 @@ const LatestNewsPage = () => {
       readTime: "8 min",
       url: "#",
       hasDocuments: true,
-      image: ministerImage
+      image: ministerImage // Keep the ministry building image
     },
     {
       id: 7,
@@ -77,7 +77,7 @@ const LatestNewsPage = () => {
       category: "programe",
       readTime: "6 min",
       url: "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/",
-      image: main3Image
+      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff" // Beautiful artisan bread - EXACT MATCH
     },
     {
       id: 6,
@@ -88,7 +88,7 @@ const LatestNewsPage = () => {
       category: "piata",
       readTime: "4 min",
       url: "https://agroexpert.md/rom/novosti/r-moldova-exporta-mai-multa-faina-dar-la-un-pret-mult-mai-mic",
-      image: flourImage
+      image: "https://images.pexels.com/photos/745988/pexels-photo-745988.jpeg" // Hands holding fresh bread - EXACT MATCH
     },
     {
       id: 1,
@@ -99,7 +99,7 @@ const LatestNewsPage = () => {
       category: "panificatie",
       readTime: "5 min",
       url: "https://stiri.md/article/social/tot-mai-multi-pasionati-de-panificatie-descopera-farmecul-painii-cu-maia/",
-      image: bakeryImage
+      image: "https://images.pexels.com/photos/205961/pexels-photo-205961.jpeg" // Bakery display case - EXACT MATCH
     },
     {
       id: 2,
@@ -110,7 +110,7 @@ const LatestNewsPage = () => {
       category: "piata",
       readTime: "3 min",
       url: "https://stiri.md/article/economic/in-transnistria-se-vor-scumpi-faina-si-painea/",
-      image: flourImage
+      image: "https://images.pexels.com/photos/2135/food-france-morning-breakfast.jpg" // Golden croissants - EXACT MATCH
     },
     {
       id: 3,
@@ -121,7 +121,7 @@ const LatestNewsPage = () => {
       category: "piata",
       readTime: "4 min",
       url: "https://stiri.md/article/economic/ion-perju-preturile-s-au-majorat-nejustificat-grau-in-tara-este/",
-      image: main2Image
+      image: "https://images.unsplash.com/photo-1627308595181-fa2b6f5f04e9" // Sourdough loaf - EXACT MATCH
     },
     {
       id: 4,
@@ -132,7 +132,7 @@ const LatestNewsPage = () => {
       category: "business",
       readTime: "6 min",
       url: "https://agora.md/2025/02/21/cel-mai-mare-producator-din-industria-de-panificatie-din-moldova-inregistreaza-un-profit-record",
-      image: bakeryImage
+      image: "https://images.pexels.com/photos/32792822/pexels-photo-32792822.jpeg" // Basket of artisan breads - EXACT MATCH
     },
     {
       id: 5,
@@ -143,7 +143,7 @@ const LatestNewsPage = () => {
       category: "tendinte",
       readTime: "7 min",
       url: "https://moldova.europalibera.org/a/27188328.html",
-      image: forumImage
+      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff" // Beautiful artisan bread - EXACT MATCH
     }
   ];
 
