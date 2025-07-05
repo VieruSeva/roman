@@ -15,7 +15,7 @@ class ApiController extends Controller
 {
     public function index()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://285fac8a-9abb-4496-bfa9-336118ee1968.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://819bd34d-c6bc-43f0-a034-b230217c3d06.preview.emergentagent.com');
         
         $htmlContent = '
         <!DOCTYPE html>
@@ -708,7 +708,7 @@ class ApiController extends Controller
 
     public function preview()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://285fac8a-9abb-4496-bfa9-336118ee1968.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://819bd34d-c6bc-43f0-a034-b230217c3d06.preview.emergentagent.com');
         
         $htmlContent = '
         <!DOCTYPE html>
@@ -774,7 +774,7 @@ class ApiController extends Controller
 
     public function links()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://285fac8a-9abb-4496-bfa9-336118ee1968.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://819bd34d-c6bc-43f0-a034-b230217c3d06.preview.emergentagent.com');
         
         $htmlContent = '
         <!DOCTYPE html>
@@ -841,8 +841,8 @@ class ApiController extends Controller
             <div class="link-section">
                 <h2>Original Preview Link</h2>
                 <p>For reference, this was the original link you provided:</p>
-                <a class="button" href="https://285fac8a-9abb-4496-bfa9-336118ee1968.preview.emergentagent.com/" target="_blank">Open Original Site</a>
-                <p>URL: <code class="code">https://285fac8a-9abb-4496-bfa9-336118ee1968.preview.emergentagent.com/</code></p>
+                <a class="button" href="https://819bd34d-c6bc-43f0-a034-b230217c3d06.preview.emergentagent.com/" target="_blank">Open Original Site</a>
+                <p>URL: <code class="code">https://819bd34d-c6bc-43f0-a034-b230217c3d06.preview.emergentagent.com/</code></p>
             </div>
             
             <div class="link-section">
@@ -1496,7 +1496,7 @@ https://example.com/news/article3"></textarea>
 
     public function newPreview()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://285fac8a-9abb-4496-bfa9-336118ee1968.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://819bd34d-c6bc-43f0-a034-b230217c3d06.preview.emergentagent.com');
         return redirect($previewUrl);
     }
 
