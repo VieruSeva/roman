@@ -1499,4 +1499,56 @@ https://example.com/news/article3"></textarea>
         $previewUrl = env('PREVIEW_ENDPOINT', 'https://d3d77e89-171c-4a42-8e1f-1883b72d04bf.preview.emergentagent.com');
         return redirect($previewUrl);
     }
+
+    /**
+     * Generic document download function
+     * Serves any document from the frontend documents directory
+     */
+    public function downloadDocument($filename)
+    {
+        // Security: Clean the filename to prevent directory traversal
+        $filename = basename($filename);
+        
+        // Define possible document paths
+        $possiblePaths = [
+            '/app/frontend/src/documents/' . $filename,
+            '/app/frontend/public/documents/' . $filename,
+            '/app/documents/' . $filename,
+        ];
+        
+        foreach ($possiblePaths as $filePath) {
+            if (file_exists($filePath)) {
+                // Determine content type based on file extension
+                $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+                
+                $contentType = 'application/octet-stream'; // Default
+                if ($extension === 'pdf') {
+                    $contentType = 'application/pdf';
+                } elseif ($extension === 'docx') {
+                    $contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                } elseif ($extension === 'doc') {
+                    $contentType = 'application/msword';
+                }
+                
+                // For DOCX files, force download
+                if ($extension === 'docx' || $extension === 'doc') {
+                    return response()->download($filePath, $filename, [
+                        'Content-Type' => $contentType
+                    ]);
+                }
+                
+                // For PDF files, display inline
+                return response()->file($filePath, [
+                    'Content-Type' => $contentType,
+                    'Content-Disposition' => 'inline; filename="' . $filename . '"'
+                ]);
+            }
+        }
+        
+        return response()->json([
+            'error' => 'Document not found',
+            'filename' => $filename,
+            'searched_paths' => $possiblePaths
+        ], 404);
+    }
 }
