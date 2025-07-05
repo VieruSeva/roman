@@ -23,8 +23,9 @@ const LegislationPage = () => {
       const previewUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
       setPreviewModal({ isOpen: true, url: previewUrl, title });
     } else {
-      // For PDF files, use the backend URL directly
-      setPreviewModal({ isOpen: true, url: url, title });
+      // For PDF files, also use Google Docs Viewer for better compatibility
+      const previewUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+      setPreviewModal({ isOpen: true, url: previewUrl, title });
     }
   };
 
