@@ -132,7 +132,7 @@ class ANIPMBackendTester:
             "POST",
             "fetch-news-image",
             200,
-            data={"url": url},
+            data={"url": url, "force_refresh": True},
             check_content_type="application/json"
         )
 
