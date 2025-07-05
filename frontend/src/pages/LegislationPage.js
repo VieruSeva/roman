@@ -90,7 +90,7 @@ const LegislationPage = () => {
       id: 6,
       title: "Legea privind întreprinderile mici și mijlocii",
       description: "Cadrul legal pentru funcționarea întreprinderilor mici și mijlocii din industria alimentară.",
-      file: "/documents/Legea privind întreprinderile mici și mijlocii.pdf",
+      file: `${process.env.REACT_APP_BACKEND_URL}/api/download/Legea privind întreprinderile mici și mijlocii.pdf`,
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -98,7 +98,7 @@ const LegislationPage = () => {
       id: 7,
       title: "Legea privind informarea consumatorului cu privire la produse",
       description: "Legislația referitoare la informațiile ce trebuie furnizate consumatorilor despre produsele alimentare.",
-      file: "/documents/Legea_privind_informarea_consumatorului_cu_privire_la_produsele.pdf",
+      file: `${process.env.REACT_APP_BACKEND_URL}/api/download/Legea_privind_informarea_consumatorului_cu_privire_la_produsele.pdf`,
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -106,7 +106,7 @@ const LegislationPage = () => {
       id: 8,
       title: "Resurse suplimentare - Link-uri utile",
       description: "Document cu link-uri utile către alte resurse legislative.",
-      file: "/documents/link.docx",
+      file: `${process.env.REACT_APP_BACKEND_URL}/api/download/link.docx`,
       type: "docx",
       icon: <FaFileWord className="text-blue-500 text-2xl" />
     }
