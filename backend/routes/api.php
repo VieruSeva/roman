@@ -43,6 +43,9 @@ Route::get('/download/minist2.pdf', [ApiController::class, 'downloadMinist2']);
 Route::get('/download/minist3.docx', [ApiController::class, 'downloadMinist3']);
 Route::get('/download/minist4.pdf', [ApiController::class, 'downloadMinist4']);
 
+// Generic document download endpoint
+Route::get('/download/{filename}', [ApiController::class, 'downloadDocument'])->where('filename', '.*');
+
 // News ticker endpoint
 Route::get('/news-ticker', [ApiController::class, 'getNewsTicker']);
 
