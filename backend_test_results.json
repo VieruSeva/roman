@@ -17,9 +17,9 @@
     "response_code": 200,
     "content_type": "application/json",
     "data": {
-      "id": "b7704c6f-3726-4a07-9b9c-3f8c90f0d104",
-      "client_name": "test_client_104539",
-      "timestamp": "2025-07-05T10:45:39.000000Z"
+      "id": "34a54805-7282-42a6-b4ed-efb3bcb44b62",
+      "client_name": "test_client_104652",
+      "timestamp": "2025-07-05T10:46:52.000000Z"
     }
   },
   {
@@ -28,6 +28,11 @@
     "response_code": 200,
     "content_type": "application/json",
     "data": [
+      {
+        "id": "34a54805-7282-42a6-b4ed-efb3bcb44b62",
+        "client_name": "test_client_104652",
+        "timestamp": "2025-07-05T10:46:52.000000Z"
+      },
       {
         "id": "b7704c6f-3726-4a07-9b9c-3f8c90f0d104",
         "client_name": "test_client_104539",
@@ -41,14 +46,14 @@
     ]
   },
   {
-    "name": "Get Status Check b7704c6f-3726-4a07-9b9c-3f8c90f0d104",
+    "name": "Get Status Check 34a54805-7282-42a6-b4ed-efb3bcb44b62",
     "status": "PASS",
     "response_code": 200,
     "content_type": "application/json",
     "data": {
-      "id": "b7704c6f-3726-4a07-9b9c-3f8c90f0d104",
-      "client_name": "test_client_104539",
-      "timestamp": "2025-07-05T10:45:39.000000Z"
+      "id": "34a54805-7282-42a6-b4ed-efb3bcb44b62",
+      "client_name": "test_client_104652",
+      "timestamp": "2025-07-05T10:46:52.000000Z"
     }
   },
   {
@@ -203,7 +208,7 @@
       "successful_extractions": 1,
       "failed_extractions": 1,
       "success_rate": 50,
-      "processing_time_seconds": 5.7,
+      "processing_time_seconds": 1.5,
       "results": [
         {
           "success": false,
@@ -220,7 +225,7 @@
           "title": "Tot mai mul\u021bi pasiona\u021bi de panifica\u021bie descoper\u0103 farmecul p\u00e2inii cu maia",
           "description": "Tot mai mul\u021bi pasiona\u021bi de domeniul panifica\u021biei descoper\u0103 farmecul p\u00e2inii cu maia - s\u0103n\u0103toas\u0103, gustoas\u0103 \u0219i care necesit\u0103 o aten\u021bie aparte la preparare. Unul dintre ei este Natalia Cu\u0219nir din Chi\u0219in\u0103u, care a deschis o brut\u0103rie artizanal\u0103.",
           "extraction_method": "og_image",
-          "cached": false,
+          "cached": true,
           "image_alt": null,
           "image_width": "640",
           "image_height": "336",
@@ -229,7 +234,7 @@
           }
         }
       ],
-      "timestamp": "2025-07-05T10:46:34.192202Z"
+      "timestamp": "2025-07-05T10:46:56.551642Z"
     }
   },
   {
