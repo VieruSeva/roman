@@ -10,6 +10,17 @@ import "aos/dist/aos.css";
 import { PageHero } from '../components/PageHero';
 import { FaArrowLeft } from 'react-icons/fa';
 
+// Import local images
+import bakeryImage from '../images/bakery.jpg';
+import ministerImage from '../images/minister.jpg';
+import flourImage from '../images/flour.jpg';
+import mainImage from '../images/main.jpg';
+import main2Image from '../images/main2.jpg';
+import main3Image from '../images/main3.jpg';
+import latestNewsImage from '../images/latest-news.jpg';
+import forumImage from '../images/forum.jpg';
+import trans1Image from '../images/trans1.jpg';
+
 const LatestNewsPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
