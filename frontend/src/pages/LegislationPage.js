@@ -10,6 +10,11 @@ import main3 from "../images/main3.jpg";
 const LegislationPage = () => {
   const [previewModal, setPreviewModal] = useState({ isOpen: false, url: '', title: '' });
   
+  // Get backend URL from environment or fallback to current origin
+  const getBackendUrl = () => {
+    return process.env.REACT_APP_BACKEND_URL || window.location.origin;
+  };
+  
   // Modal handlers
   const openPreview = (url, title) => {
     // Check if it's a DOCX file
