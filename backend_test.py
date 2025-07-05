@@ -125,14 +125,14 @@ class ANIPMBackendTester:
         
         return False, None
 
-    def test_fetch_news_image(self, url="https://agora.md/2025/02/21/cel-mai-mare-producator-din-industria-de-panificatie-din-moldova-inregistreaza-un-profit-record"):
+    def test_fetch_news_image(self, url="https://stiri.md/article/social/tot-mai-multi-pasionati-de-panificatie-descopera-farmecul-painii-cu-maia/"):
         """Test the fetch news image endpoint"""
         return self.run_test(
             "Fetch News Image",
             "POST",
             "fetch-news-image",
             200,
-            data={"url": url, "force_refresh": True},
+            data={"url": url},
             check_content_type="application/json"
         )
 
