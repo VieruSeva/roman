@@ -24,8 +24,6 @@ import trans1Image from '../images/trans1.jpg';
 const LatestNewsPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [newsImages, setNewsImages] = useState({});
-  const [loadingImages, setLoadingImages] = useState(true);
 
   // Initialize AOS
   useEffect(() => {
@@ -33,68 +31,6 @@ const LatestNewsPage = () => {
       duration: 1000,
       once: true,
     });
-  }, []);
-
-  // Fetch images for news items when component mounts
-  useEffect(() => {
-    const fetchNewsImages = async () => {
-      try {
-        const urls = newsData
-          .filter(news => news.url && news.url !== '#')
-          .map(news => news.url);
-        
-        console.log('Fetching images for URLs:', urls);
-        
-        if (urls.length === 0) {
-          console.log('No external URLs found');
-          setLoadingImages(false);
-          return;
-        }
-
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
-        console.log('Backend URL:', backendUrl);
-        
-        const apiUrl = `${backendUrl}/api/fetch-multiple-news-images`;
-        console.log('Calling API:', apiUrl);
-        
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(urls)
-        });
-
-        console.log('API Response status:', response.status);
-
-        if (response.ok) {
-          const results = await response.json();
-          console.log('API Results:', results);
-          
-          const imageMap = {};
-          results.forEach(result => {
-            if (result.image_url) {
-              imageMap[result.url] = {
-                image_url: result.image_url,
-                title: result.title,
-                description: result.description
-              };
-            }
-          });
-          
-          console.log('Image Map:', imageMap);
-          setNewsImages(imageMap);
-        } else {
-          console.error('API call failed:', response.status, await response.text());
-        }
-      } catch (error) {
-        console.error('Error fetching news images:', error);
-      } finally {
-        setLoadingImages(false);
-      }
-    };
-
-    fetchNewsImages();
   }, []);
 
   const pageInfo = {
@@ -106,7 +42,7 @@ const LatestNewsPage = () => {
     ]
   };
 
-  // News data with generic descriptions to avoid copyright issues
+  // Updated news data with LOCAL images - No more API dependency!
   const newsData = [
     {
       id: 9,
@@ -116,9 +52,9 @@ const LatestNewsPage = () => {
       author: "ANIPM",
       category: "sustenabilitate",
       readTime: "10 min",
-      url: "#",  // NU link extern pentru aceasta stire!
+      url: "#",
       hasImages: true,
-      image: "/images/trans1.jpg"
+      image: trans1Image
     },
     {
       id: 8,
@@ -130,7 +66,7 @@ const LatestNewsPage = () => {
       readTime: "8 min",
       url: "#",
       hasDocuments: true,
-      image: "/images/minister.jpg"
+      image: ministerImage
     },
     {
       id: 7,
@@ -140,7 +76,8 @@ const LatestNewsPage = () => {
       author: "MDED.gov.md",
       category: "programe",
       readTime: "6 min",
-      url: "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/"
+      url: "https://mded.gov.md/domenii/ajutor-de-stat/ajutor-de-stat-regional-pentru-investitii/",
+      image: main3Image
     },
     {
       id: 6,
@@ -150,7 +87,8 @@ const LatestNewsPage = () => {
       author: "Agroexpert.md",
       category: "piata",
       readTime: "4 min",
-      url: "https://agroexpert.md/rom/novosti/r-moldova-exporta-mai-multa-faina-dar-la-un-pret-mult-mai-mic"
+      url: "https://agroexpert.md/rom/novosti/r-moldova-exporta-mai-multa-faina-dar-la-un-pret-mult-mai-mic",
+      image: flourImage
     },
     {
       id: 1,
@@ -160,7 +98,8 @@ const LatestNewsPage = () => {
       author: "Stiri.md",
       category: "panificatie",
       readTime: "5 min",
-      url: "https://stiri.md/article/social/tot-mai-multi-pasionati-de-panificatie-descopera-farmecul-painii-cu-maia/"
+      url: "https://stiri.md/article/social/tot-mai-multi-pasionati-de-panificatie-descopera-farmecul-painii-cu-maia/",
+      image: bakeryImage
     },
     {
       id: 2,
@@ -170,7 +109,8 @@ const LatestNewsPage = () => {
       author: "Stiri.md",
       category: "piata",
       readTime: "3 min",
-      url: "https://stiri.md/article/economic/in-transnistria-se-vor-scumpi-faina-si-painea/"
+      url: "https://stiri.md/article/economic/in-transnistria-se-vor-scumpi-faina-si-painea/",
+      image: flourImage
     },
     {
       id: 3,
@@ -180,7 +120,8 @@ const LatestNewsPage = () => {
       author: "Stiri.md",
       category: "piata",
       readTime: "4 min",
-      url: "https://stiri.md/article/economic/ion-perju-preturile-s-au-majorat-nejustificat-grau-in-tara-este/"
+      url: "https://stiri.md/article/economic/ion-perju-preturile-s-au-majorat-nejustificat-grau-in-tara-este/",
+      image: main2Image
     },
     {
       id: 4,
@@ -190,7 +131,8 @@ const LatestNewsPage = () => {
       author: "Agora.md",
       category: "business",
       readTime: "6 min",
-      url: "https://agora.md/2025/02/21/cel-mai-mare-producator-din-industria-de-panificatie-din-moldova-inregistreaza-un-profit-record"
+      url: "https://agora.md/2025/02/21/cel-mai-mare-producator-din-industria-de-panificatie-din-moldova-inregistreaza-un-profit-record",
+      image: bakeryImage
     },
     {
       id: 5,
@@ -200,7 +142,8 @@ const LatestNewsPage = () => {
       author: "Europa Liberă",
       category: "tendinte",
       readTime: "7 min",
-      url: "https://moldova.europalibera.org/a/27188328.html"
+      url: "https://moldova.europalibera.org/a/27188328.html",
+      image: forumImage
     }
   ];
 
