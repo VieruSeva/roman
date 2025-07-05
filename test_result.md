@@ -22,6 +22,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Retested the document preview functionality after fixing the backend MySQL migration issue. The functionality is working perfectly. All document cards (8 in total) display correctly with both 'Previzualizare' and 'Descarcă' buttons. The preview modal opens correctly when clicking the 'Previzualizare' button, showing the document title in the header, document content in an iframe, download button, and close button. Both PDF and DOCX documents can be previewed, with DOCX files correctly using Google Docs Viewer as expected. The modal can be closed using the close button. The download functionality works correctly - we detected network requests to the document files using the correct Laravel API endpoints (/api/download/). The integration between the frontend and the PHP Laravel backend is working properly for document previews and downloads."
+      - working: true
+        agent: "testing"
+        comment: "Retested the document preview functionality on the Legislation page. All 8 document cards display correctly with both 'Previzualizare' and 'Descarcă' buttons. The preview modal opens correctly when clicking the 'Previzualizare' button, showing the document title in the header, document content in an iframe using Google Docs Viewer, download button, and close button. Both PDF and DOCX documents can be previewed correctly. The modal can be closed using the close button. The Google Docs Viewer is now being used for all document types (both PDF and DOCX) as expected after the recent fix. The integration between the frontend and the PHP Laravel backend is working properly for document previews and downloads."
 
 backend:
   - task: "Database Connectivity & Operations"
