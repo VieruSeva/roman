@@ -285,38 +285,18 @@ const LatestNewsPage = () => {
                         className="block"
                       >
                         <div className="bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:border-primary-300">
-                          {/* Image from actual news site */}
-                          {loadingImages ? (
-                            <div className="h-48 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse flex items-center justify-center">
-                              <FaImage className="text-gray-400 text-3xl" />
+                          {/* Image with local source - Always displays */}
+                          <div className="h-48 overflow-hidden relative">
+                            <img 
+                              src={news.image} 
+                              alt={news.title} 
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            {/* Image source overlay */}
+                            <div className="absolute bottom-0 right-0 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded-tl-md">
+                              <span>Sursă: {news.author}</span>
                             </div>
-                          ) : newsImages[news.url]?.image_url ? (
-                            <div className="h-48 overflow-hidden relative">
-                              <img 
-                                src={newsImages[news.url].image_url} 
-                                alt={news.title} 
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                onError={(e) => {
-                                  e.target.style.display = 'none';
-                                  e.target.nextSibling.style.display = 'flex';
-                                }}
-                              />
-                              {/* Image source overlay */}
-                              <div className="absolute bottom-0 right-0 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded-tl-md">
-                                <span>Sursă: {news.author}</span>
-                              </div>
-                              <div className="h-48 bg-gradient-to-r from-primary-100 to-blue-100 hidden items-center justify-center">
-                                <FaImage className="text-primary-400 text-3xl" />
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="h-48 bg-gradient-to-r from-primary-100 to-blue-100 flex items-center justify-center">
-                              <div className="text-center">
-                                <FaImage className="text-primary-400 text-3xl mx-auto mb-2" />
-                                <span className="text-primary-600 text-sm">Imagine va fi vizibilă pe site</span>
-                              </div>
-                            </div>
-                          )}
+                          </div>
                           
                           {/* Header with source and external link indicator */}
                           <div className="bg-gradient-to-r from-primary-50 to-blue-50 p-4 border-b border-gray-100">
