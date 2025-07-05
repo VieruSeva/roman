@@ -17,9 +17,9 @@
     "response_code": 200,
     "content_type": "application/json",
     "data": {
-      "id": "34a54805-7282-42a6-b4ed-efb3bcb44b62",
-      "client_name": "test_client_104652",
-      "timestamp": "2025-07-05T10:46:52.000000Z"
+      "id": "1ba2b580-9ff1-488e-9ef8-6e2919a54886",
+      "client_name": "test_client_104726",
+      "timestamp": "2025-07-05T10:47:26.000000Z"
     }
   },
   {
@@ -28,6 +28,11 @@
     "response_code": 200,
     "content_type": "application/json",
     "data": [
+      {
+        "id": "1ba2b580-9ff1-488e-9ef8-6e2919a54886",
+        "client_name": "test_client_104726",
+        "timestamp": "2025-07-05T10:47:26.000000Z"
+      },
       {
         "id": "34a54805-7282-42a6-b4ed-efb3bcb44b62",
         "client_name": "test_client_104652",
@@ -46,14 +51,14 @@
     ]
   },
   {
-    "name": "Get Status Check 34a54805-7282-42a6-b4ed-efb3bcb44b62",
+    "name": "Get Status Check 1ba2b580-9ff1-488e-9ef8-6e2919a54886",
     "status": "PASS",
     "response_code": 200,
     "content_type": "application/json",
     "data": {
-      "id": "34a54805-7282-42a6-b4ed-efb3bcb44b62",
-      "client_name": "test_client_104652",
-      "timestamp": "2025-07-05T10:46:52.000000Z"
+      "id": "1ba2b580-9ff1-488e-9ef8-6e2919a54886",
+      "client_name": "test_client_104726",
+      "timestamp": "2025-07-05T10:47:26.000000Z"
     }
   },
   {
@@ -192,10 +197,25 @@
   },
   {
     "name": "Fetch News Image",
-    "status": "FAIL",
-    "expected": 200,
-    "response_code": 400,
-    "content_type": "application/json"
+    "status": "PASS",
+    "response_code": 200,
+    "content_type": "application/json",
+    "data": {
+      "success": true,
+      "url": "https://stiri.md/article/social/tot-mai-multi-pasionati-de-panificatie-descopera-farmecul-painii-cu-maia/",
+      "image_url": "https://i.simpalsmedia.com/point.md/news/600x315/36e3ad7022d1502b10166527ef8b6eb3.jpg",
+      "title": "Tot mai mul\u021bi pasiona\u021bi de panifica\u021bie descoper\u0103 farmecul p\u00e2inii cu maia",
+      "description": "Tot mai mul\u021bi pasiona\u021bi de domeniul panifica\u021biei descoper\u0103 farmecul p\u00e2inii cu maia - s\u0103n\u0103toas\u0103, gustoas\u0103 \u0219i care necesit\u0103 o aten\u021bie aparte la preparare. Unul dintre ei este Natalia Cu\u0219nir din Chi\u0219in\u0103u, care a deschis o brut\u0103rie artizanal\u0103.",
+      "extraction_method": "og_image",
+      "cached": true,
+      "timestamp": "2025-07-05T10:46:34.187055Z",
+      "image_alt": null,
+      "image_width": "640",
+      "image_height": "336",
+      "metadata": {
+        "type": "article"
+      }
+    }
   },
   {
     "name": "Fetch Multiple News Images",
@@ -208,7 +228,7 @@
       "successful_extractions": 1,
       "failed_extractions": 1,
       "success_rate": 50,
-      "processing_time_seconds": 1.5,
+      "processing_time_seconds": 10.21,
       "results": [
         {
           "success": false,
@@ -234,7 +254,7 @@
           }
         }
       ],
-      "timestamp": "2025-07-05T10:46:56.551642Z"
+      "timestamp": "2025-07-05T10:47:36.799474Z"
     }
   },
   {
