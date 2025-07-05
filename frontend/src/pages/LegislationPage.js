@@ -50,7 +50,7 @@ const LegislationPage = () => {
       id: 1,
       title: "HOTĂRÂRE Cu privire la aprobarea Cerinţelor de calitate pentru produse de panificaţie şi paste făinoase",
       description: "Hotărârea privind cerințele de calitate pentru produsele de panificație și paste făinoase.",
-      file: "/documents/HOTĂRÂRE_Cerinţelor_Produse_de_panificaţie_şi_paste_făinoase.pdf",
+      file: `${process.env.REACT_APP_BACKEND_URL}/api/download/HOTĂRÂRE_Cerinţelor_Produse_de_panificaţie_şi_paste_făinoase.pdf`,
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -58,7 +58,7 @@ const LegislationPage = () => {
       id: 2,
       title: "Legea cu privire la comerțul interior",
       description: "Legea care reglementează activitățile de comerț interior.",
-      file: "/documents/Legea cu privirea la comerțul interior.pdf",
+      file: `${process.env.REACT_APP_BACKEND_URL}/api/download/Legea cu privirea la comerțul interior.pdf`,
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -66,7 +66,7 @@ const LegislationPage = () => {
       id: 3,
       title: "Legea privind calitatea apei potabile",
       description: "Legislația referitoare la calitatea apei potabile utilizate în industria alimentară.",
-      file: "/documents/Legea privind calitatea apei potabile.pdf",
+      file: `${process.env.REACT_APP_BACKEND_URL}/api/download/Legea privind calitatea apei potabile.pdf`,
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -74,7 +74,7 @@ const LegislationPage = () => {
       id: 4,
       title: "Legea privind depozitarea cerealelor",
       description: "Legea care reglementează condițiile de depozitare a cerealelor.",
-      file: "/documents/Legea privind depozitatea cerialelor.pdf",
+      file: `${process.env.REACT_APP_BACKEND_URL}/api/download/Legea privind depozitatea cerialelor.pdf`,
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
@@ -82,7 +82,7 @@ const LegislationPage = () => {
       id: 5,
       title: "Legea privind siguranța alimentelor",
       description: "Legislația esențială privind siguranța alimentelor și normele de calitate.",
-      file: "/documents/Legea privind siguranța alimentelor.pdf",
+      file: `${process.env.REACT_APP_BACKEND_URL}/api/download/Legea privind siguranța alimentelor.pdf`,
       type: "pdf",
       icon: <FaFilePdf className="text-red-500 text-2xl" />
     },
