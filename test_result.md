@@ -20,14 +20,95 @@ frontend:
         agent: "testing"
         comment: "Tested the document preview functionality after the backend migration from Python to PHP Laravel. The preview functionality continues to work correctly. The modal opens when clicking the 'Previzualizare' button, displays the document in an iframe, and can be closed using the close button. Both PDF and DOCX documents can be previewed, with DOCX files using Google Docs Viewer. The download links correctly point to the new Laravel backend API endpoints (/api/download/). The integration between the frontend and the new PHP Laravel backend is working properly for document previews and downloads."
 
+backend:
+  - task: "Database Connectivity & Operations"
+    implemented: true
+    working: true
+    file: "/app/backend/app/Models/StatusCheck.php"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of database connectivity and operations"
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested database connectivity and operations. The MySQL database is working correctly. The status check creation endpoint (/api/status POST) successfully creates new status checks with proper UUID generation and timestamp handling. The status check retrieval endpoints (/api/status GET and /api/status/{id} GET) correctly return status checks from the database. All database operations are working as expected after the migration from MongoDB to MySQL."
+
+  - task: "Document Download Endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/routes/api.php"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of document download endpoints"
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested all document download endpoints. All PDF files (industria-bauturilor.pdf, oferta-lactate-ro.pdf, oferta-carne-si-oua-ro.pdf, minist1.pdf, minist2.pdf, minist4.pdf) and DOCX files (minist3.docx) are downloading correctly with proper content types and file sizes. The file headers are set correctly, and the content is being served properly. The migration from Python FastAPI to PHP Laravel for file serving is working perfectly."
+
+  - task: "News Ticker API"
+    implemented: true
+    working: true
+    file: "/app/backend/app/Http/Controllers/Api/ApiController.php"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of news ticker API"
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested the news ticker API (/api/news-ticker). The endpoint returns a properly formatted JSON response with 14 items (9 news items and 5 events). The response structure includes 'success', 'items', and 'total' fields as expected. The migration from Python to PHP Laravel for the news ticker API is working correctly."
+
+  - task: "Image Extraction API"
+    implemented: true
+    working: true
+    file: "/app/backend/app/Services/ImageExtractorService.php"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of image extraction API"
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested the image extraction APIs. The single URL extraction endpoint (/api/fetch-news-image) correctly extracts images from news article URLs. The batch processing endpoint (/api/fetch-multiple-news-images) successfully processes multiple URLs and returns proper results. The migration from Python requests + BeautifulSoup to PHP Guzzle + Symfony DomCrawler for image extraction is working correctly. Note: Some URLs may not have extractable images, but the API handles this gracefully with proper error messages."
+
+  - task: "General API Health"
+    implemented: true
+    working: true
+    file: "/app/backend/routes/api.php"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of general API health"
+      - working: true
+        agent: "testing"
+        comment: "Successfully tested the main API endpoints. The root endpoint (/api/) returns a properly formatted HTML page with links to other endpoints. The demo page (/api/demo) is interactive and working correctly. All routes are accessible and returning the expected responses. The migration from Python FastAPI to PHP Laravel for the general API endpoints is working correctly."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 3
+  test_sequence: 4
 
 test_plan:
   current_focus:
     - "Document Preview Functionality on LegislationPage"
+    - "Database Connectivity & Operations"
+    - "Document Download Endpoints"
+    - "News Ticker API"
+    - "Image Extraction API"
+    - "General API Health"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -43,3 +124,5 @@ agent_communication:
     message: "✅ COMPLETED: Full backend migration from Python to PHP Laravel. Removed server.py, created comprehensive dependencies list in /app/backend/DEPENDENCIES.md, configured .env file, installed all PHP dependencies via composer, and successfully started Laravel server on port 8001. All API endpoints are working including document downloads, news image extraction, and status checks. Created startup script at /app/backend/start.sh and migration summary at /app/BACKEND_MIGRATION_SUMMARY.md. Backend is now 100% PHP-based with no Python dependencies. ✅ SUPERVISOR UPDATED: Updated supervisor configuration to use PHP Laravel instead of Python. The supervisor now loads and installs PHP and Laravel automatically, with no Python dependencies. ✅ PREVIZUALIZAREA FIXED: Updated the previzualizarea function to work correctly with the new PHP Laravel backend. All document previews now use the Laravel API endpoints and work properly."
   - agent: "main"
     message: "✅ SERVICES STARTED: Successfully started both frontend and backend services. Frontend (React) is running on port 3000, backend (PHP Laravel) is running on port 8001, and MySQL database is configured and running. The website is now accessible at https://285fac8a-9abb-4496-bfa9-336118ee1968.preview.emergentagent.com and displaying correctly. All previous migrations from Python to PHP Laravel and MongoDB to MySQL are working properly. The site is ready for use and development."
+  - agent: "testing"
+    message: "Completed comprehensive backend testing after the migration from Python to PHP Laravel and MongoDB to MySQL. All backend components are working correctly: (1) Database connectivity and operations are functioning properly with MySQL, including status check creation and retrieval with proper UUID generation and timestamp handling. (2) All document download endpoints are working correctly for both PDF and DOCX files with proper content types and file sizes. (3) The news ticker API returns properly formatted JSON responses with all expected data. (4) Image extraction APIs successfully extract images from news article URLs, both for single URLs and batch processing. (5) All general API endpoints are accessible and returning the expected responses. The migration has been successful with 100% of tests passing."
