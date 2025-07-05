@@ -458,33 +458,13 @@ const LatestNewsPage = () => {
                           className="block"
                         >
                           <div className="flex items-start p-3 rounded-lg border border-gray-100 hover:border-primary-300 hover:bg-primary-50 transition-all duration-300">
-                            {/* Image display logic - Special handling for id 9 */}
+                            {/* Image display with local images */}
                             <div className="flex-shrink-0 w-16 h-16 rounded-md overflow-hidden mr-3 relative">
-                              {loadingImages ? (
-                                <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
-                                  <FaImage className="text-gray-400 text-sm" />
-                                </div>
-                              ) : newsImages[news.url]?.image_url ? (
-                                <>
-                                  <img 
-                                    src={newsImages[news.url].image_url} 
-                                    alt={news.title} 
-                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      e.target.nextSibling.style.display = 'flex';
-                                    }}
-                                  />
-                                  {/* Small source indicator for sidebar */}
-                                  <div className="absolute bottom-0 right-0 bg-black bg-opacity-70 text-white text-xs px-1 rounded-tl-sm">
-                                    <span className="text-xs">{news.author.charAt(0)}</span>
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="w-full h-full bg-primary-100 flex items-center justify-center">
-                                  <FaImage className="text-primary-400 text-sm" />
-                                </div>
-                              )}
+                              <img 
+                                src={news.image} 
+                                alt={news.title} 
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
                             </div>
                             
                             <div className="flex-1 min-w-0">
