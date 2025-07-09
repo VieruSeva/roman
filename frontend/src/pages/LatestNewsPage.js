@@ -57,18 +57,6 @@ const LatestNewsPage = () => {
       image: trans1Image // Keep the existing conference image for this one
     },
     {
-      id: 8,
-      title: "Ministerul Agriculturii vine cu o reacție în urma demersului scris de ANIPM",
-      excerpt: "Ministerul Agriculturii și Industriei Alimentare a transmis un răspuns oficial în urma demersului înaintat de Asociația Națională a Industriei de Panificație și Morărit din Moldova. Documentele oficiale sunt disponibile pentru consultare.",
-      date: "5 aprilie 2025",
-      author: "ANIPM",
-      category: "oficial",
-      readTime: "8 min",
-      url: "#",
-      hasDocuments: true,
-      image: ministerImage // Keep the ministry building image
-    },
-    {
       id: 7,
       title: "Schema de ajutor de stat regional pentru investiții",
       excerpt: "Citește despre programul de ajutor de stat pentru investiții regionale pe site-ul oficial al MDED.",
