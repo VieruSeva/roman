@@ -1,0 +1,100 @@
+[
+  {
+    "name": "API Index",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "API Demo Page",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Create Status Check",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "News Ticker",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Fetch News Image",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Fetch Multiple News Images",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "HOT\u0102R\u00c2RE Cerin\u0163elor Produse de panifica\u0163ie \u015fi paste f\u0103inoase PDF",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Legea cu privirea la comer\u021bul interior PDF",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Legea privind calitatea apei potabile PDF",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Legea privind depozitatea cerialelor PDF",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Legea privind siguran\u021ba alimentelor PDF",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Legea privind \u00eentreprinderile mici \u0219i mijlocii PDF",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Legea privind informarea consumatorului PDF",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  },
+  {
+    "name": "Link DOCX",
+    "status": "FAIL",
+    "expected": 200,
+    "response_code": 502,
+    "content_type": ""
+  }
+]
