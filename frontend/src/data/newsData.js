@@ -5,13 +5,6 @@ export const newsTickerData = {
   success: true,
   items: [
     {
-      id: 9,
-      title: "Tranziția Verde a Republicii Moldova: Motor al Integrării Europene și Dezvoltării Durabile",
-      date: "24 iunie 2025",
-      type: "news",
-      url: "#" // Internal link
-    },
-    {
       id: 1,
       title: "R. Moldova exportă mai multă făină, dar la un preț mult mai mic",
       type: "news",
@@ -94,7 +87,7 @@ export const newsTickerData = {
       url: "/noutati"
     }
   ],
-  total: 14
+  total: 13
 };
 
 // News data for the TransitionGalleryPage
@@ -162,3 +155,5 @@ export const allNewsData = [
     url: "/noutati"
   }
 ]
+
+
