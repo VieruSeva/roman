@@ -340,7 +340,7 @@ def test_document_direct_access():
     print("\n🔍 Testing direct document access from frontend public folder...")
     
     # Get the frontend URL from the environment
-    frontend_url = os.environ.get('REACT_APP_FRONTEND_URL', 'https://5bbe3b01-21a0-41a5-8ebe-b4c341aa2191.preview.emergentagent.com')
+    frontend_url = os.environ.get('REACT_APP_FRONTEND_URL', 'https://3e699f79-f977-4fc4-aaa2-e77a33279101.preview.emergentagent.com')
     
     # List of documents to test
     documents = [
@@ -385,7 +385,7 @@ def test_static_news_data():
     print("\n🔍 Testing static news data file...")
     
     # Get the frontend URL from the environment
-    frontend_url = os.environ.get('REACT_APP_FRONTEND_URL', 'https://5bbe3b01-21a0-41a5-8ebe-b4c341aa2191.preview.emergentagent.com')
+    frontend_url = os.environ.get('REACT_APP_FRONTEND_URL', 'https://3e699f79-f977-4fc4-aaa2-e77a33279101.preview.emergentagent.com')
     
     # Check if the newsData.js file exists
     try:
@@ -406,7 +406,7 @@ def test_static_news_data():
 
 def main():
     # Get backend URL from environment or use default
-    backend_url = os.environ.get('REACT_APP_BACKEND_URL', 'https://5bbe3b01-21a0-41a5-8ebe-b4c341aa2191.preview.emergentagent.com')
+    backend_url = os.environ.get('REACT_APP_BACKEND_URL', 'https://3e699f79-f977-4fc4-aaa2-e77a33279101.preview.emergentagent.com')
     
     print(f"Using backend URL: {backend_url}")
     

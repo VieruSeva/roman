@@ -18,5 +18,5 @@ Traceback (most recent call last):
     raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
 playwright._impl._errors.TimeoutError: Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://5bbe3b01-21a0-41a5-8ebe-b4c341aa2191.preview.emergentagent.com/legislatie", waiting until "load"
+  - navigating to "https://3e699f79-f977-4fc4-aaa2-e77a33279101.preview.emergentagent.com/legislatie", waiting until "load"
 

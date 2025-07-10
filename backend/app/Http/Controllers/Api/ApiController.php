@@ -861,8 +861,8 @@ class ApiController extends Controller
             <div class="link-section">
                 <h2>Original Preview Link</h2>
                 <p>For reference, this was the original link you provided:</p>
-                <a class="button" href="https://5bbe3b01-21a0-41a5-8ebe-b4c341aa2191.preview.emergentagent.com/" target="_blank">Open Original Site</a>
-                <p>URL: <code class="code">https://5bbe3b01-21a0-41a5-8ebe-b4c341aa2191.preview.emergentagent.com/</code></p>
+                <a class="button" href="https://3e699f79-f977-4fc4-aaa2-e77a33279101.preview.emergentagent.com/" target="_blank">Open Original Site</a>
+                <p>URL: <code class="code">https://3e699f79-f977-4fc4-aaa2-e77a33279101.preview.emergentagent.com/</code></p>
             </div>
             
             <div class="link-section">
@@ -1516,7 +1516,7 @@ https://example.com/news/article3"></textarea>
 
     public function newPreview()
     {
-        $previewUrl = env('PREVIEW_ENDPOINT', 'https://5bbe3b01-21a0-41a5-8ebe-b4c341aa2191.preview.emergentagent.com');
+        $previewUrl = env('PREVIEW_ENDPOINT', 'https://3e699f79-f977-4fc4-aaa2-e77a33279101.preview.emergentagent.com');
         return redirect($previewUrl);
     }
 
