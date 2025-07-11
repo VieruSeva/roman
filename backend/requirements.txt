@@ -1,9 +1,0 @@
-# This backend is now fully PHP-based using Laravel
-# Python is no longer required
-# 
-# For PHP dependencies, see:
-# - composer.json (PHP dependencies)
-# - DEPENDENCIES.md (detailed documentation)
-#
-# To install dependencies:
-# composer install
